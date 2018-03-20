@@ -4,13 +4,17 @@ import SpriteKit
 public class GameScene: SKScene {
     
     public override func didMove (to view: SKView) {
-        //self.createCircle()
-        self.createPlayer()
+        let leftArrow = ButtonNode(imageNamed: "leftArrow")
+        leftArrow.position = CGPoint(x: (scene?.size.width)! * -0.3, y: (scene?.size.height)! * 0)
         
-//        self.createButton(position: CGPoint(x: (scene?.size.width)! * -0.3, y: (scene?.size.height)! * 0), text: "<")
-//        self.createButton(position: CGPoint(x: (scene?.size.width)! * -0.25, y: (scene?.size.height)! * 0), text: "v")
-//        self.createButton(position: CGPoint(x: (scene?.size.width)! * -0.25, y: (scene?.size.height)! * 0.065), text: "^")
-//        self.createButton(position: CGPoint(x: (scene?.size.width)! * -0.2, y: (scene?.size.height)! * 0), text: ">")
+        let downArrow = ButtonNode(imageNamed: "downArrow")
+        downArrow.position = CGPoint(x: (scene?.size.width)! * -0.25, y: (scene?.size.height)! * 0)
+        
+        let upArrow = ButtonNode(imageNamed: "upArrow")
+        upArrow.position = CGPoint(x: (scene?.size.width)! * -0.25, y: (scene?.size.height)! * 0.065)
+        
+        let rightArrow = ButtonNode(imageNamed: "rightArrow")
+        rightArrow.position = CGPoint(x: (scene?.size.width)! * -0.2, y: (scene?.size.height)! * 0)
     }
     
     func createCircle (){
@@ -29,9 +33,9 @@ public class GameScene: SKScene {
         let player = SKSpriteNode(imageNamed: "player")
         player.name = "player"
         player.position = CGPoint(x: (scene?.size.width)! * 0, y: (scene?.size.height)! * 0)
-        player.xScale = 0.5
-        player.yScale = 0.5
-            
+//        player.xScale = 0.5
+//        player.yScale = 0.5
+
         self.addChild(player)
     }
     
