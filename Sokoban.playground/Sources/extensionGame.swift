@@ -5,8 +5,10 @@ let tileSize: CGFloat = 64
 
 public class GameScene: SKScene {
     var trees: [SKSpriteNode] = []
-    var garbageCans: [SKSpriteNode] = []
     var garbages: [SKSpriteNode] = []
+    var garbageCans: [SKSpriteNode] = []
+    var fullGarbageCans: [SKSpriteNode] = []
+    
     var columns = 10
     var lines = 5
     
@@ -38,13 +40,32 @@ public class GameScene: SKScene {
     }
     
     func moveBy (x: CGFloat, y: CGFloat) {
-        let player = self.childNode(withName: "gameMap")!.childNode(withName: "player")!
+        let gameMap = self.childNode(withName: "gameMap")!
+        let player = gameMap.childNode(withName: "player")!
+        let node = gameMap.atPoint(CGPoint(x: player.position.x + x, y: player.position.y + y))
         
-        let node = self.childNode(withName: "gameMap")!.atPoint(CGPoint(x: player.position.x + x, y: player.position.y + y))
+        let move = SKAction.moveBy(x: x, y: y, duration: 0.1)
         
-        if node.name != "tree" && node.name != "garbageCan" {
-            let move = SKAction.sequence([SKAction.moveBy(x: x, y: y, duration: 0.1)])
+        if node.name == "garbage" {
+            let other_node = gameMap.atPoint(CGPoint(x: player.position.x + 2*x, y: player.position.y + 2*y))
             
+            if other_node.name == "garbageCan"  {
+                node.run(move)
+                
+                // delay
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    // change the color of the garbageCan
+                    gameMap.addChild(self.newObject(name: "fullGarbageCan", vector: &self.fullGarbageCans, position: other_node.position))
+                    
+                    // remove empty garbageCan and garbage
+                    other_node.removeFromParent()
+                    node.removeFromParent()
+                }
+            } else if other_node.name != "tree" && other_node.name != "garbage" {
+                node.run(move)
+                player.run(move)
+            }
+        } else if node.name != "tree" && node.name != "garbageCan" {
             player.run(move)
         }
     }
@@ -75,28 +96,29 @@ public class GameScene: SKScene {
         // trees
         for i in 0...(columns-1) {
             let j = CGFloat(i)
-            gameMap.addChild(newObject(name: "tree", vector: &trees, position: CGPoint(x: (xRange.lowerLimit + j*tileSize), y: yRange.upperLimit)))
-            gameMap.addChild(newObject(name: "tree", vector: &trees, position: CGPoint(x: (xRange.lowerLimit + j*tileSize), y: yRange.lowerLimit)))
+            gameMap.addChild(self.newObject(name: "tree", vector: &trees, position: CGPoint(x: (xRange.lowerLimit + j*tileSize), y: yRange.upperLimit)))
+            gameMap.addChild(self.newObject(name: "tree", vector: &trees, position: CGPoint(x: (xRange.lowerLimit + j*tileSize), y: yRange.lowerLimit)))
         }
         
         for i in 1...(lines-2) {
             let j = CGFloat(i)
-            gameMap.addChild(newObject(name: "tree", vector: &trees, position: CGPoint(x: xRange.upperLimit, y: (yRange.lowerLimit + j*tileSize))))
-            gameMap.addChild(newObject(name: "tree", vector: &trees, position: CGPoint(x: xRange.lowerLimit, y: (yRange.lowerLimit + j*tileSize))))
+            gameMap.addChild(self.newObject(name: "tree", vector: &trees, position: CGPoint(x: xRange.upperLimit, y: (yRange.lowerLimit + j*tileSize))))
+            gameMap.addChild(self.newObject(name: "tree", vector: &trees, position: CGPoint(x: xRange.lowerLimit, y: (yRange.lowerLimit + j*tileSize))))
         }
         
-        // garbageCans
-        gameMap.addChild(newObject(name: "garbageCan", vector: &garbageCans, position: CGPoint(x: xRange.upperLimit - tileSize, y: yRange.lowerLimit + tileSize)))
-        gameMap.addChild(newObject(name: "garbageCan", vector: &garbageCans, position: CGPoint(x: xRange.lowerLimit + tileSize, y: yRange.upperLimit - tileSize)))
-        
         // garbages
-        gameMap.addChild(newObject(name: "garbage", vector: &garbages, position: CGPoint(x: xRange.lowerLimit + 5*tileSize, y: yRange.upperLimit - tileSize)))
-        gameMap.addChild(newObject(name: "garbage", vector: &garbages, position: CGPoint(x: xRange.lowerLimit + 3*tileSize, y: yRange.upperLimit - 2*tileSize)))
+        gameMap.addChild(self.newObject(name: "garbage", vector: &garbages, position: CGPoint(x: xRange.lowerLimit + 5*tileSize, y: yRange.upperLimit - tileSize)))
+        gameMap.addChild(self.newObject(name: "garbage", vector: &garbages, position: CGPoint(x: xRange.lowerLimit + 3*tileSize, y: yRange.upperLimit - 2*tileSize)))
+        
+        // garbageCans
+        gameMap.addChild(self.newObject(name: "garbageCan", vector: &garbageCans, position: CGPoint(x: xRange.upperLimit - tileSize, y: yRange.lowerLimit + tileSize)))
+        gameMap.addChild(self.newObject(name: "garbageCan", vector: &garbageCans, position: CGPoint(x: xRange.lowerLimit + tileSize, y: yRange.upperLimit - tileSize)))
         
         // player
         let player = SKSpriteNode(imageNamed: "playerFront")
         player.name = "player"
         player.position = CGPoint(x: xMiddle, y: yMiddle)
+        player.zPosition = 2
         gameMap.addChild(player)
         
         // limit the players's movements according to the map
@@ -110,6 +132,12 @@ public class GameScene: SKScene {
         let object = SKSpriteNode(imageNamed: name)
         object.position = position
         object.name = name
+        
+        if name == "garbage" {
+            object.zPosition = 1
+        } else {
+            object.zPosition = 0
+        }
         
         vector.append(object)
         
