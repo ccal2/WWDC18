@@ -1,6 +1,8 @@
 import PlaygroundSupport
 import SpriteKit
 
+let tileSize: CGFloat = 64
+
 public class GameScene: SKScene {
     var trees: [SKSpriteNode] = []
     var garbageCans: [SKSpriteNode] = []
@@ -19,13 +21,13 @@ public class GameScene: SKScene {
         let node = self.atPoint(pos)
         
         if node.name == "arrowLeft" {
-            moveBy(x: -64, y: 0)
+            moveBy(x: -tileSize, y: 0)
         } else if node.name == "arrowRight" {
-            moveBy(x: 64, y: 0)
+            moveBy(x: tileSize, y: 0)
         } else if node.name == "arrowUp" {
-            moveBy(x: 0, y: 64)
+            moveBy(x: 0, y: tileSize)
         } else if node.name == "arrowDown" {
-            moveBy(x: 0, y: -64)
+            moveBy(x: 0, y: -tileSize)
         }
     }
     
@@ -65,38 +67,42 @@ public class GameScene: SKScene {
         // gameMap limits and middle
         let width = gameMap.frame.width
         let height = gameMap.frame.height
-        let xRange = SKRange(lowerLimit: (32 - width/2), upperLimit: (width/2 - 32))
-        let yRange = SKRange(lowerLimit: (32 - height/2), upperLimit: (height/2 - 32))
-        let xMiddle = xRange.lowerLimit + CGFloat(Int(columns/2) * 64)
-        let yMiddle = yRange.lowerLimit + CGFloat(Int(lines/2) * 64)
+        let xRange = SKRange(lowerLimit: (tileSize - width)/2, upperLimit: (width - tileSize)/2)
+        let yRange = SKRange(lowerLimit: (tileSize - height)/2, upperLimit: (height - tileSize)/2)
+        let xMiddle = xRange.lowerLimit + CGFloat(Int(columns/2)) * tileSize
+        let yMiddle = yRange.lowerLimit + CGFloat(Int(lines/2)) * tileSize
         
         // trees
         for i in 0...(columns-1) {
             let j = CGFloat(i)
-            gameMap.addChild(newObject(name: "tree", vector: &trees, position: CGPoint(x: (xRange.lowerLimit + 64*j), y: yRange.upperLimit)))
-            gameMap.addChild(newObject(name: "tree", vector: &trees, position: CGPoint(x: (xRange.lowerLimit + 64*j), y: yRange.lowerLimit)))
+            gameMap.addChild(newObject(name: "tree", vector: &trees, position: CGPoint(x: (xRange.lowerLimit + j*tileSize), y: yRange.upperLimit)))
+            gameMap.addChild(newObject(name: "tree", vector: &trees, position: CGPoint(x: (xRange.lowerLimit + j*tileSize), y: yRange.lowerLimit)))
         }
         
         for i in 1...(lines-2) {
             let j = CGFloat(i)
-            gameMap.addChild(newObject(name: "tree", vector: &trees, position: CGPoint(x: xRange.upperLimit, y: (yRange.lowerLimit + 64*j))))
-            gameMap.addChild(newObject(name: "tree", vector: &trees, position: CGPoint(x: xRange.lowerLimit, y: (yRange.lowerLimit + 64*j))))
+            gameMap.addChild(newObject(name: "tree", vector: &trees, position: CGPoint(x: xRange.upperLimit, y: (yRange.lowerLimit + j*tileSize))))
+            gameMap.addChild(newObject(name: "tree", vector: &trees, position: CGPoint(x: xRange.lowerLimit, y: (yRange.lowerLimit + j*tileSize))))
         }
         
         // garbageCans
-        gameMap.addChild(newObject(name: "garbageCan", vector: &garbageCans, position: CGPoint(x: xRange.upperLimit - 64, y: yRange.lowerLimit + 64)))
-        gameMap.addChild(newObject(name: "garbageCan", vector: &garbageCans, position: CGPoint(x: xRange.lowerLimit + 64, y: yRange.upperLimit - 64)))
+        gameMap.addChild(newObject(name: "garbageCan", vector: &garbageCans, position: CGPoint(x: xRange.upperLimit - tileSize, y: yRange.lowerLimit + tileSize)))
+        gameMap.addChild(newObject(name: "garbageCan", vector: &garbageCans, position: CGPoint(x: xRange.lowerLimit + tileSize, y: yRange.upperLimit - tileSize)))
+        
+        // garbages
+        gameMap.addChild(newObject(name: "garbage", vector: &garbages, position: CGPoint(x: xRange.lowerLimit + 5*tileSize, y: yRange.upperLimit - tileSize)))
+        gameMap.addChild(newObject(name: "garbage", vector: &garbages, position: CGPoint(x: xRange.lowerLimit + 3*tileSize, y: yRange.upperLimit - 2*tileSize)))
         
         // player
         let player = SKSpriteNode(imageNamed: "playerFront")
         player.name = "player"
         player.position = CGPoint(x: xMiddle, y: yMiddle)
+        gameMap.addChild(player)
         
         // limit the players's movements according to the map
         player.constraints = [SKConstraint.positionX(xRange, y: yRange)]
         
         // add to the tree
-        gameMap.addChild(player)
         self.addChild(gameMap)
     }
     
