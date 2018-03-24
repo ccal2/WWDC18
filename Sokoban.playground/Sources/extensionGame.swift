@@ -15,8 +15,6 @@ public class GameScene: SKScene {
     public override func didMove (to view: SKView) {
         loadBackground()
         loadGameMap()
-        
-        
     }
 
     func touchDown (atPoint pos: CGPoint) {
@@ -47,19 +45,36 @@ public class GameScene: SKScene {
         let move = SKAction.moveBy(x: x, y: y, duration: 0.1)
         
         if node.name == "garbage" {
+            // verify where it's going
             let other_node = gameMap.atPoint(CGPoint(x: player.position.x + 2*x, y: player.position.y + 2*y))
             
-            if other_node.name == "garbageCan"  {
+            if other_node.name == "garbageCan" {
                 node.run(move)
                 
                 // delay
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     // change the color of the garbageCan
                     gameMap.addChild(self.newObject(name: "fullGarbageCan", vector: &self.fullGarbageCans, position: other_node.position))
                     
-                    // remove empty garbageCan and garbage
+                    // remove empty garbageCan and garbage from parent and from arrays
                     other_node.removeFromParent()
                     node.removeFromParent()
+                    
+                    
+                    
+                    
+                    
+//                    let index = garbageCans.index(of: other_node)
+//                    garbageCans.remove(at: index)
+                    
+                    
+                    
+                    
+                    
+                    
+                    if self.garbageCans.count == 0 {
+                        print("win!!!!")
+                    }
                 }
             } else if other_node.name != "tree" && other_node.name != "garbage" {
                 node.run(move)
@@ -83,7 +98,7 @@ public class GameScene: SKScene {
         // grass background
         let gameMap = SKSpriteNode(imageNamed: "grassMap")
         gameMap.name = "gameMap"
-        gameMap.position = CGPoint(x: (scene?.size.width)! * 0.08, y: (scene?.size.width)! * 0)
+        gameMap.position = CGPoint(x: (scene?.size.width)! * 0.05, y: 0)
         
         // gameMap limits and middle
         let width = gameMap.frame.width
@@ -107,12 +122,12 @@ public class GameScene: SKScene {
         }
         
         // garbages
-        gameMap.addChild(self.newObject(name: "garbage", vector: &garbages, position: CGPoint(x: xRange.lowerLimit + 5*tileSize, y: yRange.upperLimit - tileSize)))
+        gameMap.addChild(self.newObject(name: "garbage", vector: &garbages, position: CGPoint(x: xRange.lowerLimit + 7*tileSize, y: yRange.upperLimit - 2*tileSize)))
         gameMap.addChild(self.newObject(name: "garbage", vector: &garbages, position: CGPoint(x: xRange.lowerLimit + 3*tileSize, y: yRange.upperLimit - 2*tileSize)))
         
         // garbageCans
         gameMap.addChild(self.newObject(name: "garbageCan", vector: &garbageCans, position: CGPoint(x: xRange.upperLimit - tileSize, y: yRange.lowerLimit + tileSize)))
-        gameMap.addChild(self.newObject(name: "garbageCan", vector: &garbageCans, position: CGPoint(x: xRange.lowerLimit + tileSize, y: yRange.upperLimit - tileSize)))
+        gameMap.addChild(self.newObject(name: "garbageCan", vector: &garbageCans, position: CGPoint(x: xRange.lowerLimit + 2*tileSize, y: yRange.upperLimit - 2*tileSize)))
         
         // player
         let player = SKSpriteNode(imageNamed: "playerFront")
