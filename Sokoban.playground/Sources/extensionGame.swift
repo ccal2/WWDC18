@@ -80,7 +80,7 @@ public class GameScene: SKScene {
                 node.run(move)
                 player.run(move)
             }
-        } else if node.name != "tree" && node.name != "binBlue" {
+        } else if node.name != "tree" && node.name != "bin" {
             player.run(move)
         }
     }
