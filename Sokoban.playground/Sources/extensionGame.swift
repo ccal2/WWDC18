@@ -6,13 +6,10 @@ let columns = 10
 let lines = 10
 
 public class GameScene: SKScene {
-    var trees: [SKSpriteNode] = []
-    var garbages: [SKSpriteNode] = []
-    var bins: [SKSpriteNode] = []
-    var fullBins: [SKSpriteNode] = []
+    var emptyBins: Int = 4
     
     public override func didMove (to view: SKView) {
-        loadBackground()
+        loadButtons()
         loadGameMap()
     }
 
@@ -53,25 +50,15 @@ public class GameScene: SKScene {
                 // delay
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     // change the color of the binBlue
-                    gameMap.addChild(self.newObject(name: "fullBin", vector: &self.fullBins, position: other_node.position))
+                    gameMap.addChild(self.newObject(name: "fullBin", position: other_node.position))
                     
                     // remove empty binBlue and garbage from parent and from arrays
                     other_node.removeFromParent()
                     node.removeFromParent()
                     
+                    self.emptyBins -= 1
                     
-                    
-                    
-                    
-//                    let index = self.bins.index(of: other_node)
-//                    self.bins.remove(at: index)
-                    
-                    
-                    
-                    
-                    
-                    
-                    if self.bins.count == 0 {
+                    if self.emptyBins == 0 {
                         print("win!!!!")
                     }
                 }
@@ -84,9 +71,7 @@ public class GameScene: SKScene {
         }
     }
     
-    func loadBackground () {
-        // fazer o background
-        
+    func loadButtons () {
         createButton(imageNamed: "arrowLeft", position: CGPoint(x: (scene?.size.width)! * -0.4, y: (scene?.size.height)! * 0))
         createButton(imageNamed: "arrowDown", position: CGPoint(x: (scene?.size.width)! * -0.35, y: (scene?.size.height)! * -0.065))
         createButton(imageNamed: "arrowUp", position: CGPoint(x: (scene?.size.width)! * -0.35, y: (scene?.size.height)! * 0.065))
@@ -110,30 +95,30 @@ public class GameScene: SKScene {
         // trees
         for i in 0...(columns-1) {
             let j = CGFloat(i)
-            gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: matrix(x: j, y: 0, xRange, yRange)))
-            gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: matrix(x: j, y: 9, xRange, yRange)))
+            gameMap.addChild(self.newObject(name: "tree", position: matrix(x: j, y: 0, xRange, yRange)))
+            gameMap.addChild(self.newObject(name: "tree", position: matrix(x: j, y: 9, xRange, yRange)))
         }
         
         for i in 1...(lines-2) {
             let j = CGFloat(i)
-            gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: matrix(x: 0, y: j, xRange, yRange)))
-            gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: matrix(x: 9, y: j, xRange, yRange)))
+            gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 0, y: j, xRange, yRange)))
+            gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 9, y: j, xRange, yRange)))
         }
         
-        gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: matrix(x: 8, y: 8, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: matrix(x: 1, y: 6, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: matrix(x: 2, y: 6, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: matrix(x: 4, y: 6, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: matrix(x: 5, y: 6, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: matrix(x: 8, y: 4, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: matrix(x: 1, y: 3, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: matrix(x: 5, y: 1, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 8, y: 8, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 1, y: 6, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 2, y: 6, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 4, y: 6, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 5, y: 6, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 8, y: 4, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 1, y: 3, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 5, y: 1, xRange, yRange)))
         
         // garbages
-        gameMap.addChild(self.newObject(name: "garbage", vector: &self.garbages, position: matrix(x: 7, y: 7, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "garbage", vector: &self.garbages, position: matrix(x: 3, y: 6, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "garbage", vector: &self.garbages, position: matrix(x: 6, y: 4, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "garbage", vector: &self.garbages, position: matrix(x: 4, y: 3, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "garbage", position: matrix(x: 7, y: 7, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "garbage", position: matrix(x: 3, y: 6, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "garbage", position: matrix(x: 6, y: 4, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "garbage", position: matrix(x: 4, y: 3, xRange, yRange)))
         
         // bins
         gameMap.addChild(self.newBin(color: "Blue", position: matrix(x: 6, y: 2, xRange, yRange)))
@@ -155,7 +140,7 @@ public class GameScene: SKScene {
         self.addChild(gameMap)
     }
     
-    func newObject (name: String, vector: inout [SKSpriteNode], position: CGPoint) -> SKSpriteNode {
+    func newObject (name: String, position: CGPoint) -> SKSpriteNode {
         let object = SKSpriteNode(imageNamed: name)
         object.position = position
         object.name = name
@@ -166,8 +151,6 @@ public class GameScene: SKScene {
             object.zPosition = 0
         }
         
-        vector.append(object)
-        
         return object
     }
     
@@ -177,8 +160,6 @@ public class GameScene: SKScene {
         bin.position = position
         bin.name = "bin"
         bin.zPosition = 0
-        
-        self.bins.append(bin)
         
         return bin
     }
