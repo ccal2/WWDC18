@@ -4,6 +4,7 @@ import SpriteKit
 let tileSize: CGFloat = 64
 let columns = 10
 let lines = 10
+let frames: CGFloat = 2
 
 public class GameScene: SKScene {
     var emptyBins: Int = 4
@@ -19,13 +20,13 @@ public class GameScene: SKScene {
         let player = gameMap.childNode(withName: "player")!
         
         if button.name == "arrowLeft" {
-            move("Left", from: player.position, x: -tileSize, y: 0)
+            self.move("Left", from: player.position, x: -tileSize, y: 0)
         } else if button.name == "arrowRight" {
-            move("Right", from: player.position, x: tileSize, y: 0)
+            self.move("Right", from: player.position, x: tileSize, y: 0)
         } else if button.name == "arrowUp" {
-            move("Back", from: player.position, x: 0, y: tileSize)
+            self.move("Back", from: player.position, x: 0, y: tileSize)
         } else if button.name == "arrowDown" {
-           move("Front", from: player.position, x: 0, y: -tileSize)
+           self.move("Front", from: player.position, x: 0, y: -tileSize)
         }
     }
     
@@ -44,16 +45,17 @@ public class GameScene: SKScene {
         gameMap.addChild(player)
         
         let node = gameMap.atPoint(CGPoint(x: player.position.x + x, y: player.position.y + y))
-        let move = SKAction.moveBy(x: x, y: y, duration: 0.1)
         
         if node.name == "garbage" {
             // verify where it's going
             let other_node = gameMap.atPoint(CGPoint(x: player.position.x + 2*x, y: player.position.y + 2*y))
             
+            if other_node.name != "tree" && other_node.name != "garbage" && other_node.name != "fullBin" {
+                self.movement(object: node, x, y)
+                self.movement(object: player, x, y)
+            }
+            
             if other_node.name == "bin" {
-                node.run(move)
-                player.run(move)
-                
                 // delay
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     // change the color of the binBlue
@@ -69,12 +71,16 @@ public class GameScene: SKScene {
                         print("win!!!!")
                     }
                 }
-            } else if other_node.name != "tree" && other_node.name != "garbage" {
-                node.run(move)
-                player.run(move)
             }
-        } else if node.name != "tree" && node.name != "bin" {
-            player.run(move)
+            
+        } else if node.name != "tree" && node.name != "bin" && node.name != "fullBin" {
+            self.movement(object: player, x, y)
+        }
+    }
+    
+    func movement (object: SKNode, _ x: CGFloat, _ y: CGFloat) {
+        for _ in 1...Int(frames) {
+            object.position = CGPoint(x: object.position.x + (x/frames), y: object.position.y + (y/frames))
         }
     }
     
