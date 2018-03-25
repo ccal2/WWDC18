@@ -103,8 +103,9 @@ public class GameScene: SKScene {
                     }
                 }
             } else {
-                var counter = 0
+                var lost = false
                 var nearNodes: [SKNode] = []
+                var pinned: [Bool] = [false, false, false, false] // 0 - right; 1 - down; 2 - left; 3 - up
                 
                 let nearRight = gameMap.atPoint(CGPoint(x: node.position.x + tileSize, y: node.position.y))
                 let nearDown = gameMap.atPoint(CGPoint(x: node.position.x, y: node.position.y - tileSize))
@@ -116,13 +117,23 @@ public class GameScene: SKScene {
                 nearNodes.append(nearLeft)
                 nearNodes.append(nearUp)
                 
-                for node in nearNodes {
-                    if node.name == "tree" || node.name == "bin" {
-                        counter += 1
+                for i in 0...(nearNodes.count-1) {
+                    print(nearNodes[i].name!)
+                    
+                    if nearNodes[i].name == "tree" || nearNodes[i].name == "bin" {
+                        pinned[i] = true
+                        print(pinned)
                     }
                 }
                 
-                if counter >= 2 {
+                for i in 0...3 {
+                    if pinned[i] && pinned[(i+1)%4] {
+                        lost = true
+                        break
+                    }
+                }
+                
+                if lost {
                     let lostScene = SKScene(fileNamed: "Scene")!
                     lostScene.backgroundColor = #colorLiteral(red: 0.3287855243, green: 0.3323060302, blue: 0.3478847121, alpha: 1)
                     
