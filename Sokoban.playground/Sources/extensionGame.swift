@@ -15,31 +15,17 @@ public class GameScene: SKScene {
 
     func touchButton (atPoint pos: CGPoint) {
         let button = self.atPoint(pos)
-        
         let gameMap = self.childNode(withName: "gameMap")!
         let player = gameMap.childNode(withName: "player")!
-        player.removeFromParent()
         
         if button.name == "arrowLeft" {
-            let newPlayer = createPlayer(imageNamed: "playerLeft", position: player.position)
-            gameMap.addChild(newPlayer)
-            
-            moveBy(x: -tileSize, y: 0)
+            move("Left", from: player.position, x: -tileSize, y: 0)
         } else if button.name == "arrowRight" {
-            let newPlayer = createPlayer(imageNamed: "playerRight", position: player.position)
-            gameMap.addChild(newPlayer)
-            
-            moveBy(x: tileSize, y: 0)
+            move("Right", from: player.position, x: tileSize, y: 0)
         } else if button.name == "arrowUp" {
-            let newPlayer = createPlayer(imageNamed: "playerBack", position: player.position)
-            gameMap.addChild(newPlayer)
-            
-            moveBy(x: 0, y: tileSize)
+            move("Back", from: player.position, x: 0, y: tileSize)
         } else if button.name == "arrowDown" {
-            let newPlayer = createPlayer(imageNamed: "playerFront", position: player.position)
-            gameMap.addChild(newPlayer)
-            
-            moveBy(x: 0, y: -tileSize)
+           move("Front", from: player.position, x: 0, y: -tileSize)
         }
     }
     
@@ -49,11 +35,15 @@ public class GameScene: SKScene {
         }
     }
     
-    func moveBy (x: CGFloat, y: CGFloat) {
+    func move (_ direction: String, from position: CGPoint, x: CGFloat, y: CGFloat) {
         let gameMap = self.childNode(withName: "gameMap")!
-        let player = gameMap.childNode(withName: "player")!
-        let node = gameMap.atPoint(CGPoint(x: player.position.x + x, y: player.position.y + y))
+        let oldPlayer = gameMap.childNode(withName: "player")!
+        let player = createPlayer(imageNamed: "player\(direction)", position: position)
         
+        oldPlayer.removeFromParent()
+        gameMap.addChild(player)
+        
+        let node = gameMap.atPoint(CGPoint(x: player.position.x + x, y: player.position.y + y))
         let move = SKAction.moveBy(x: x, y: y, duration: 0.1)
         
         if node.name == "garbage" {
@@ -62,13 +52,14 @@ public class GameScene: SKScene {
             
             if other_node.name == "bin" {
                 node.run(move)
+                player.run(move)
                 
                 // delay
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     // change the color of the binBlue
                     gameMap.addChild(self.newObject(name: "fullBin", position: other_node.position))
-                    
-                    // remove empty binBlue and garbage from parent and from arrays
+
+                    // remove empty bin and garbage from parent
                     other_node.removeFromParent()
                     node.removeFromParent()
                     
