@@ -6,10 +6,22 @@ let columns: CGFloat = 10
 let lines: CGFloat = 8
 let frames: CGFloat = 4
 
+var arrowLeftPos = CGPoint(x: 0, y: 0)
+var arrowDownPos = CGPoint(x: 0, y: 0)
+var arrowUpPos = CGPoint(x: 0, y: 0)
+var arrowRightPos = CGPoint(x: 0, y: 0)
+
+
 public class GameScene: SKScene {
     var emptyBins: Int = 4
     
+    
     public override func didMove (to view: SKView) {
+        arrowLeftPos = CGPoint(x: (scene?.size.width)! * 0.3, y: 0)
+        arrowDownPos = CGPoint(x: (scene?.size.width)! * 0.35, y: (scene?.size.height)! * -0.065)
+        arrowUpPos = CGPoint(x: (scene?.size.width)! * 0.35, y: (scene?.size.height)! * 0.065)
+        arrowRightPos = CGPoint(x: (scene?.size.width)! * 0.4, y: 0)
+        
         loadButtons()
         loadGameMap()
     }
@@ -20,19 +32,37 @@ public class GameScene: SKScene {
         let player = gameMap.childNode(withName: "player")!
         
         if button.name == "arrowLeft" {
+            self.createButton(imageNamed: "arrowLeft_h", position: arrowLeftPos)
             self.move("Left", from: player.position, x: -tileSize, y: 0)
         } else if button.name == "arrowRight" {
+            self.createButton(imageNamed: "arrowRight_h", position: arrowRightPos)
             self.move("Right", from: player.position, x: tileSize, y: 0)
         } else if button.name == "arrowUp" {
+            self.createButton(imageNamed: "arrowUp_h", position: arrowUpPos)
             self.move("Back", from: player.position, x: 0, y: tileSize)
         } else if button.name == "arrowDown" {
-           self.move("Front", from: player.position, x: 0, y: -tileSize)
+            self.createButton(imageNamed: "arrowDown_h", position: arrowDownPos)
+            self.move("Front", from: player.position, x: 0, y: -tileSize)
+        }
+    }
+    
+    func touchEnd (atPoint pos: CGPoint) {
+        let button = self.atPoint(pos)
+        
+        if button.name == "arrowLeft_h" || button.name == "arrowRight_h" || button.name == "arrowUp_h" || button.name == "arrowDown_h" {
+            button.removeFromParent()
         }
     }
     
     public override func touchesBegan (_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
             touchButton(atPoint: t.location(in: self))
+        }
+    }
+    
+    public override func touchesEnded (_ touches: Set<UITouch>, with event: UIEvent?) {
+        for t in touches {
+            touchEnd(atPoint: t.location(in: self))
         }
     }
     
@@ -88,10 +118,10 @@ public class GameScene: SKScene {
     }
     
     func loadButtons () {
-        createButton(imageNamed: "arrowLeft", position: CGPoint(x: (scene?.size.width)! * 0.3, y: (scene?.size.height)! * 0))
-        createButton(imageNamed: "arrowDown", position: CGPoint(x: (scene?.size.width)! * 0.35, y: (scene?.size.height)! * -0.065))
-        createButton(imageNamed: "arrowUp", position: CGPoint(x: (scene?.size.width)! * 0.35, y: (scene?.size.height)! * 0.065))
-        createButton(imageNamed: "arrowRight", position: CGPoint(x: (scene?.size.width)! * 0.4, y: (scene?.size.height)! * 0))
+        createButton(imageNamed: "arrowLeft", position: arrowLeftPos)
+        createButton(imageNamed: "arrowDown", position: arrowDownPos)
+        createButton(imageNamed: "arrowUp", position: arrowUpPos)
+        createButton(imageNamed: "arrowRight", position: arrowRightPos)
     }
     
     func loadGameMap () {
@@ -193,6 +223,7 @@ public class GameScene: SKScene {
         
         self.addChild(button)
     }
+    
     
 }
 
