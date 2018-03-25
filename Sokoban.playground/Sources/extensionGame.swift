@@ -101,8 +101,8 @@ public class GameScene: SKScene {
         gameMap.position = CGPoint(x: (scene?.size.width)! * 0.13, y: 0)
         
         // gameMap limits and middle
-        let width = gameMap.frame.width
-        let height = gameMap.frame.height
+        let width = gameMap.frame.width - 10 // 10 -> grassMap margins
+        let height = gameMap.frame.height - 10
         let xRange = SKRange(lowerLimit: (tileSize - width)/2, upperLimit: (width - tileSize)/2)
         let yRange = SKRange(lowerLimit: (tileSize - height)/2, upperLimit: (height - tileSize)/2)
         let xMiddle = xRange.lowerLimit + CGFloat(Int(columns/2)) * tileSize
@@ -121,13 +121,24 @@ public class GameScene: SKScene {
             gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: CGPoint(x: xRange.lowerLimit, y: (yRange.lowerLimit + j*tileSize))))
         }
         
+        gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: CGPoint(x: xRange.lowerLimit + 8*tileSize, y: (yRange.lowerLimit + tileSize))))
+        gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: CGPoint(x: xRange.lowerLimit + tileSize, y: (yRange.lowerLimit + 3*tileSize))))
+        gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: CGPoint(x: xRange.lowerLimit + 2*tileSize, y: (yRange.lowerLimit + 3*tileSize))))
+        gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: CGPoint(x: xRange.lowerLimit + 4*tileSize, y: (yRange.lowerLimit + 3*tileSize))))
+        gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: CGPoint(x: xRange.lowerLimit + 5*tileSize, y: (yRange.lowerLimit + 3*tileSize))))
+        gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: CGPoint(x: xRange.lowerLimit + 8*tileSize, y: (yRange.lowerLimit + 5*tileSize))))
+        gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: CGPoint(x: xRange.lowerLimit + tileSize, y: (yRange.lowerLimit + 6*tileSize))))
+        gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: CGPoint(x: xRange.lowerLimit + 5*tileSize, y: (yRange.lowerLimit + 8*tileSize))))
+        
         // garbages
-        gameMap.addChild(self.newObject(name: "garbage", vector: &self.garbages, position: CGPoint(x: xRange.lowerLimit + 7*tileSize, y: yRange.upperLimit - 2*tileSize)))
-        gameMap.addChild(self.newObject(name: "garbage", vector: &self.garbages, position: CGPoint(x: xRange.lowerLimit + 3*tileSize, y: yRange.upperLimit - 2*tileSize)))
+        gameMap.addChild(self.newObject(name: "garbage", vector: &self.garbages, position: CGPoint(x: xRange.lowerLimit + 7*tileSize, y: yRange.lowerLimit - 2*tileSize)))
+        gameMap.addChild(self.newObject(name: "garbage", vector: &self.garbages, position: CGPoint(x: xRange.lowerLimit + 3*tileSize, y: yRange.lowerLimit - 2*tileSize)))
         
         // bins
-        gameMap.addChild(self.newBin(color: "Blue", position: CGPoint(x: xRange.upperLimit - tileSize, y: yRange.lowerLimit + tileSize)))
-        gameMap.addChild(self.newBin(color: "Green", position: CGPoint(x: xRange.lowerLimit + 2*tileSize, y: yRange.upperLimit - 2*tileSize)))
+        gameMap.addChild(self.newBin(color: "Blue", position: CGPoint(x: xRange.lowerLimit + 6*tileSize, y: yRange.lowerLimit + 7*tileSize)))
+        gameMap.addChild(self.newBin(color: "Green", position: CGPoint(x: xRange.lowerLimit + tileSize, y: yRange.lowerLimit + 8*tileSize)))
+        gameMap.addChild(self.newBin(color: "Red", position: CGPoint(x: xRange.lowerLimit + 3*tileSize, y: yRange.lowerLimit + 2*tileSize)))
+        gameMap.addChild(self.newBin(color: "Yellow", position: CGPoint(x: xRange.lowerLimit + 8*tileSize, y: yRange.lowerLimit + 2*tileSize)))
         
         // player
         let player = SKSpriteNode(imageNamed: "playerFront")
