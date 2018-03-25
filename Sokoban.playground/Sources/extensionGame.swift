@@ -6,11 +6,11 @@ let tileSize: CGFloat = 64
 public class GameScene: SKScene {
     var trees: [SKSpriteNode] = []
     var garbages: [SKSpriteNode] = []
-    var garbageCans: [SKSpriteNode] = []
-    var fullGarbageCans: [SKSpriteNode] = []
+    var bins: [SKSpriteNode] = []
+    var fullBins: [SKSpriteNode] = []
     
     var columns = 10
-    var lines = 5
+    var lines = 10
     
     public override func didMove (to view: SKView) {
         loadBackground()
@@ -48,15 +48,15 @@ public class GameScene: SKScene {
             // verify where it's going
             let other_node = gameMap.atPoint(CGPoint(x: player.position.x + 2*x, y: player.position.y + 2*y))
             
-            if other_node.name == "garbageCan" {
+            if other_node.name == "bin" {
                 node.run(move)
                 
                 // delay
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    // change the color of the garbageCan
-                    gameMap.addChild(self.newObject(name: "fullGarbageCan", vector: &self.fullGarbageCans, position: other_node.position))
+                    // change the color of the binBlue
+                    gameMap.addChild(self.newObject(name: "fullBin", vector: &self.fullBins, position: other_node.position))
                     
-                    // remove empty garbageCan and garbage from parent and from arrays
+                    // remove empty binBlue and garbage from parent and from arrays
                     other_node.removeFromParent()
                     node.removeFromParent()
                     
@@ -64,15 +64,15 @@ public class GameScene: SKScene {
                     
                     
                     
-//                    let index = garbageCans.index(of: other_node)
-//                    garbageCans.remove(at: index)
+//                    let index = self.bins.index(of: other_node)
+//                    self.bins.remove(at: index)
                     
                     
                     
                     
                     
                     
-                    if self.garbageCans.count == 0 {
+                    if self.bins.count == 0 {
                         print("win!!!!")
                     }
                 }
@@ -80,7 +80,7 @@ public class GameScene: SKScene {
                 node.run(move)
                 player.run(move)
             }
-        } else if node.name != "tree" && node.name != "garbageCan" {
+        } else if node.name != "tree" && node.name != "binBlue" {
             player.run(move)
         }
     }
@@ -98,7 +98,7 @@ public class GameScene: SKScene {
         // grass background
         let gameMap = SKSpriteNode(imageNamed: "grassMap")
         gameMap.name = "gameMap"
-        gameMap.position = CGPoint(x: (scene?.size.width)! * 0.05, y: 0)
+        gameMap.position = CGPoint(x: (scene?.size.width)! * 0.13, y: 0)
         
         // gameMap limits and middle
         let width = gameMap.frame.width
@@ -111,23 +111,23 @@ public class GameScene: SKScene {
         // trees
         for i in 0...(columns-1) {
             let j = CGFloat(i)
-            gameMap.addChild(self.newObject(name: "tree", vector: &trees, position: CGPoint(x: (xRange.lowerLimit + j*tileSize), y: yRange.upperLimit)))
-            gameMap.addChild(self.newObject(name: "tree", vector: &trees, position: CGPoint(x: (xRange.lowerLimit + j*tileSize), y: yRange.lowerLimit)))
+            gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: CGPoint(x: (xRange.lowerLimit + j*tileSize), y: yRange.upperLimit)))
+            gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: CGPoint(x: (xRange.lowerLimit + j*tileSize), y: yRange.lowerLimit)))
         }
         
         for i in 1...(lines-2) {
             let j = CGFloat(i)
-            gameMap.addChild(self.newObject(name: "tree", vector: &trees, position: CGPoint(x: xRange.upperLimit, y: (yRange.lowerLimit + j*tileSize))))
-            gameMap.addChild(self.newObject(name: "tree", vector: &trees, position: CGPoint(x: xRange.lowerLimit, y: (yRange.lowerLimit + j*tileSize))))
+            gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: CGPoint(x: xRange.upperLimit, y: (yRange.lowerLimit + j*tileSize))))
+            gameMap.addChild(self.newObject(name: "tree", vector: &self.trees, position: CGPoint(x: xRange.lowerLimit, y: (yRange.lowerLimit + j*tileSize))))
         }
         
         // garbages
-        gameMap.addChild(self.newObject(name: "garbage", vector: &garbages, position: CGPoint(x: xRange.lowerLimit + 7*tileSize, y: yRange.upperLimit - 2*tileSize)))
-        gameMap.addChild(self.newObject(name: "garbage", vector: &garbages, position: CGPoint(x: xRange.lowerLimit + 3*tileSize, y: yRange.upperLimit - 2*tileSize)))
+        gameMap.addChild(self.newObject(name: "garbage", vector: &self.garbages, position: CGPoint(x: xRange.lowerLimit + 7*tileSize, y: yRange.upperLimit - 2*tileSize)))
+        gameMap.addChild(self.newObject(name: "garbage", vector: &self.garbages, position: CGPoint(x: xRange.lowerLimit + 3*tileSize, y: yRange.upperLimit - 2*tileSize)))
         
-        // garbageCans
-        gameMap.addChild(self.newObject(name: "garbageCan", vector: &garbageCans, position: CGPoint(x: xRange.upperLimit - tileSize, y: yRange.lowerLimit + tileSize)))
-        gameMap.addChild(self.newObject(name: "garbageCan", vector: &garbageCans, position: CGPoint(x: xRange.lowerLimit + 2*tileSize, y: yRange.upperLimit - 2*tileSize)))
+        // bins
+        gameMap.addChild(self.newBin(color: "Blue", position: CGPoint(x: xRange.upperLimit - tileSize, y: yRange.lowerLimit + tileSize)))
+        gameMap.addChild(self.newBin(color: "Green", position: CGPoint(x: xRange.lowerLimit + 2*tileSize, y: yRange.upperLimit - 2*tileSize)))
         
         // player
         let player = SKSpriteNode(imageNamed: "playerFront")
@@ -157,6 +157,18 @@ public class GameScene: SKScene {
         vector.append(object)
         
         return object
+    }
+    
+    func newBin (color: String, position: CGPoint) -> SKSpriteNode {
+        let bin = SKSpriteNode(imageNamed: "bin\(color)")
+        
+        bin.position = position
+        bin.name = "bin"
+        bin.zPosition = 0
+        
+        self.bins.append(bin)
+        
+        return bin
     }
     
     func createButton (imageNamed name: String, position: CGPoint) {
