@@ -11,10 +11,8 @@ var arrowDownPos = CGPoint(x: 0, y: 0)
 var arrowUpPos = CGPoint(x: 0, y: 0)
 var arrowRightPos = CGPoint(x: 0, y: 0)
 
-
 public class GameScene: SKScene {
     var emptyBins: Int = 4
-    
     
     public override func didMove (to view: SKView) {
         arrowLeftPos = CGPoint(x: (scene?.size.width)! * 0.3, y: 0)
@@ -102,6 +100,35 @@ public class GameScene: SKScene {
                         wonScene.backgroundColor = #colorLiteral(red: 0.5480121216, green: 0.3523743953, blue: 0.7093039155, alpha: 1)
                         
                         self.view?.presentScene(wonScene)
+                    }
+                }
+            } else {
+                var counter = 0
+                var nearNodes: [SKNode] = []
+                
+                let nearRight = gameMap.atPoint(CGPoint(x: node.position.x + tileSize, y: node.position.y))
+                let nearDown = gameMap.atPoint(CGPoint(x: node.position.x, y: node.position.y - tileSize))
+                let nearLeft = gameMap.atPoint(CGPoint(x: node.position.x - tileSize, y: node.position.y))
+                let nearUp = gameMap.atPoint(CGPoint(x: node.position.x, y: node.position.y + tileSize))
+                
+                nearNodes.append(nearRight)
+                nearNodes.append(nearDown)
+                nearNodes.append(nearLeft)
+                nearNodes.append(nearUp)
+                
+                for node in nearNodes {
+                    if node.name == "tree" || node.name == "bin" {
+                        counter += 1
+                    }
+                }
+                
+                if counter >= 2 {
+                    let lostScene = SKScene(fileNamed: "Scene")!
+                    lostScene.backgroundColor = #colorLiteral(red: 0.3287855243, green: 0.3323060302, blue: 0.3478847121, alpha: 1)
+                    
+                    // delay
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self.view?.presentScene(lostScene)
                     }
                 }
             }
