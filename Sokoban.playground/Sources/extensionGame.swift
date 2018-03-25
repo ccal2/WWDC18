@@ -13,23 +13,39 @@ public class GameScene: SKScene {
         loadGameMap()
     }
 
-    func touchDown (atPoint pos: CGPoint) {
-        let node = self.atPoint(pos)
+    func touchButton (atPoint pos: CGPoint) {
+        let button = self.atPoint(pos)
         
-        if node.name == "arrowLeft" {
+        let gameMap = self.childNode(withName: "gameMap")!
+        let player = gameMap.childNode(withName: "player")!
+        player.removeFromParent()
+        
+        if button.name == "arrowLeft" {
+            let newPlayer = createPlayer(imageNamed: "playerLeft", position: player.position)
+            gameMap.addChild(newPlayer)
+            
             moveBy(x: -tileSize, y: 0)
-        } else if node.name == "arrowRight" {
+        } else if button.name == "arrowRight" {
+            let newPlayer = createPlayer(imageNamed: "playerRight", position: player.position)
+            gameMap.addChild(newPlayer)
+            
             moveBy(x: tileSize, y: 0)
-        } else if node.name == "arrowUp" {
+        } else if button.name == "arrowUp" {
+            let newPlayer = createPlayer(imageNamed: "playerBack", position: player.position)
+            gameMap.addChild(newPlayer)
+            
             moveBy(x: 0, y: tileSize)
-        } else if node.name == "arrowDown" {
+        } else if button.name == "arrowDown" {
+            let newPlayer = createPlayer(imageNamed: "playerFront", position: player.position)
+            gameMap.addChild(newPlayer)
+            
             moveBy(x: 0, y: -tileSize)
         }
     }
     
     public override func touchesBegan (_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
-            touchDown(atPoint: t.location(in: self))
+            touchButton(atPoint: t.location(in: self))
         }
     }
     
@@ -127,10 +143,7 @@ public class GameScene: SKScene {
         gameMap.addChild(self.newBin(color: "Yellow", position: matrix(x: 8, y: 7, xRange, yRange)))
         
         // player
-        let player = SKSpriteNode(imageNamed: "playerFront")
-        player.name = "player"
-        player.position = CGPoint(x: xMiddle, y: yMiddle)
-        player.zPosition = 2
+        let player = self.createPlayer(imageNamed: "playerFront", position: CGPoint(x: xMiddle, y: yMiddle))
         gameMap.addChild(player)
         
         // limit the players's movements according to the map
@@ -162,6 +175,15 @@ public class GameScene: SKScene {
         bin.zPosition = 0
         
         return bin
+    }
+
+    func createPlayer (imageNamed name: String, position: CGPoint) -> SKSpriteNode {
+        let player = SKSpriteNode(imageNamed: name)
+        player.name = "player"
+        player.position = position
+        player.zPosition = 2
+        
+        return player
     }
     
     func createButton (imageNamed name: String, position: CGPoint) {
