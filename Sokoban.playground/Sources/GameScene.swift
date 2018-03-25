@@ -4,7 +4,7 @@ import SpriteKit
 let tileSize: CGFloat = 64
 let columns = 10
 let lines = 10
-let frames: CGFloat = 2
+let frames: CGFloat = 4
 
 public class GameScene: SKScene {
     var emptyBins: Int = 4
@@ -85,17 +85,17 @@ public class GameScene: SKScene {
     }
     
     func loadButtons () {
-        createButton(imageNamed: "arrowLeft", position: CGPoint(x: (scene?.size.width)! * -0.4, y: (scene?.size.height)! * 0))
-        createButton(imageNamed: "arrowDown", position: CGPoint(x: (scene?.size.width)! * -0.35, y: (scene?.size.height)! * -0.065))
-        createButton(imageNamed: "arrowUp", position: CGPoint(x: (scene?.size.width)! * -0.35, y: (scene?.size.height)! * 0.065))
-        createButton(imageNamed: "arrowRight", position: CGPoint(x: (scene?.size.width)! * -0.3, y: (scene?.size.height)! * 0))
+        createButton(imageNamed: "arrowLeft", position: CGPoint(x: (scene?.size.width)! * 0.3, y: (scene?.size.height)! * 0))
+        createButton(imageNamed: "arrowDown", position: CGPoint(x: (scene?.size.width)! * 0.35, y: (scene?.size.height)! * -0.065))
+        createButton(imageNamed: "arrowUp", position: CGPoint(x: (scene?.size.width)! * 0.35, y: (scene?.size.height)! * 0.065))
+        createButton(imageNamed: "arrowRight", position: CGPoint(x: (scene?.size.width)! * 0.4, y: (scene?.size.height)! * 0))
     }
     
     func loadGameMap () {
         // grass background
         let gameMap = SKSpriteNode(imageNamed: "grassMap")
         gameMap.name = "gameMap"
-        gameMap.position = CGPoint(x: (scene?.size.width)! * 0.13, y: 0)
+        gameMap.position = CGPoint(x: (scene?.size.width)! * -0.13, y: 0)
         
         // gameMap limits and middle
         let width = gameMap.frame.width - 10 // 10 -> grassMap margins
