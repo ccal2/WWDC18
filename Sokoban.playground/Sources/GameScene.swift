@@ -120,7 +120,7 @@ public class GameScene: SKScene {
                 for i in 0...(nearNodes.count-1) {
                     print(nearNodes[i].name!)
                     
-                    if nearNodes[i].name == "tree" || nearNodes[i].name == "bin" {
+                    if nearNodes[i].name == "tree" || nearNodes[i].name == "fullBin" {
                         pinned[i] = true
                         print(pinned)
                     }
