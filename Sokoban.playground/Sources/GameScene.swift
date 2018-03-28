@@ -118,11 +118,8 @@ public class GameScene: SKScene {
                 nearNodes.append(nearUp)
                 
                 for i in 0...(nearNodes.count-1) {
-                    print(nearNodes[i].name!)
-                    
                     if nearNodes[i].name == "tree" || nearNodes[i].name == "fullBin" {
                         pinned[i] = true
-                        print(pinned)
                     }
                 }
                 
@@ -199,16 +196,16 @@ public class GameScene: SKScene {
         gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 5, y: 1, xRange, yRange)))
         
         // garbages
-        gameMap.addChild(self.newObject(name: "garbage", position: matrix(x: 7, y: 5, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "garbage", position: matrix(x: 3, y: 5, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "garbage", position: matrix(x: 6, y: 3, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "garbage", position: matrix(x: 4, y: 2, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "garbage", color: "Green", position: matrix(x: 7, y: 5, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "garbage", color: "Red", position: matrix(x: 3, y: 5, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "garbage", color: "Blue", position: matrix(x: 6, y: 3, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "garbage", color: "Yellow", position: matrix(x: 4, y: 2, xRange, yRange)))
         
         // bins
-        gameMap.addChild(self.newBin(color: "Blue", position: matrix(x: 6, y: 2, xRange, yRange)))
-        gameMap.addChild(self.newBin(color: "Green", position: matrix(x: 1, y: 1, xRange, yRange)))
-        gameMap.addChild(self.newBin(color: "Red", position: matrix(x: 3, y: 6, xRange, yRange)))
-        gameMap.addChild(self.newBin(color: "Yellow", position: matrix(x: 8, y: 5, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "bin", color: "Blue", position: matrix(x: 6, y: 2, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "bin", color: "Green", position: matrix(x: 1, y: 1, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "bin", color: "Red", position: matrix(x: 3, y: 6, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "bin", color: "Yellow", position: matrix(x: 8, y: 5, xRange, yRange)))
         
         // player
         let player = self.createPlayer(imageNamed: "playerFront", position: CGPoint(x: xMiddle, y: yMiddle))
@@ -235,14 +232,19 @@ public class GameScene: SKScene {
         return object
     }
     
-    func newBin (color: String, position: CGPoint) -> SKSpriteNode {
-        let bin = SKSpriteNode(imageNamed: "bin\(color)")
+    func newObject (name: String, color: String, position: CGPoint) -> SKSpriteNode {
+        let object = SKSpriteNode(imageNamed: "\(name)\(color)")
         
-        bin.position = position
-        bin.name = "bin"
-        bin.zPosition = 0
+        object.position = position
+        object.name = name
         
-        return bin
+        if name == "bin" {
+            object.zPosition = 0
+        } else {
+            object.zPosition = 1
+        }
+        
+        return object
     }
 
     func createPlayer (imageNamed name: String, position: CGPoint) -> SKSpriteNode {
