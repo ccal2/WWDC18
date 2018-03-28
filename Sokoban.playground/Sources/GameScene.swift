@@ -74,32 +74,43 @@ public class GameScene: SKScene {
         
         let node = gameMap.atPoint(CGPoint(x: player.position.x + x, y: player.position.y + y))
         
-        if node.name == "garbage" {
+        if node.name!.prefix(7) == "garbage" {
+            let indexGarbage = node.name!.index(node.name!.startIndex, offsetBy: 7)
+            let colorGarbage = node.name![indexGarbage...]
+            
             // verify where it's going
             let other_node = gameMap.atPoint(CGPoint(x: player.position.x + 2*x, y: player.position.y + 2*y))
             
-            if other_node.name != "tree" && other_node.name != "garbage" && other_node.name != "fullBin" {
+            if other_node.name != "tree" && other_node.name!.prefix(7) != "garbage" && other_node.name != "fullBin" && other_node.name!.prefix(3) != "bin" {
                 self.movement(object: node, x, y)
                 self.movement(object: player, x, y)
             }
             
-            if other_node.name == "bin" {
-                // delay
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    // change the color of the binBlue
-                    gameMap.addChild(self.newObject(name: "fullBin", position: other_node.position))
-
-                    // remove empty bin and garbage from parent
-                    other_node.removeFromParent()
-                    node.removeFromParent()
+            if other_node.name!.prefix(3) == "bin" {
+                let indexBin = other_node.name!.index(other_node.name!.startIndex, offsetBy: 3)
+                let colorBin = other_node.name![indexBin...]
+                
+                if colorGarbage == colorBin {
+                    self.movement(object: node, x, y)
+                    self.movement(object: player, x, y)
                     
-                    self.emptyBins -= 1
-                    
-                    if self.emptyBins == 0 {
-                        let wonScene = SKScene(fileNamed: "Scene")!
-                        wonScene.backgroundColor = #colorLiteral(red: 0.5480121216, green: 0.3523743953, blue: 0.7093039155, alpha: 1)
+                    // delay
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        // change the color of the bin
+                        gameMap.addChild(self.newObject(name: "fullBin", position: other_node.position))
                         
-                        self.view?.presentScene(wonScene)
+                        // remove empty bin and garbage from parent
+                        other_node.removeFromParent()
+                        node.removeFromParent()
+                        
+                        self.emptyBins -= 1
+                        
+                        if self.emptyBins == 0 {
+                            let wonScene = SKScene(fileNamed: "Scene")!
+                            wonScene.backgroundColor = #colorLiteral(red: 0.5480121216, green: 0.3523743953, blue: 0.7093039155, alpha: 1)
+                            
+                            self.view?.presentScene(wonScene)
+                        }
                     }
                 }
             } else {
@@ -196,16 +207,16 @@ public class GameScene: SKScene {
         gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 5, y: 1, xRange, yRange)))
         
         // garbages
-        gameMap.addChild(self.newObject(name: "garbage", color: "Green", position: matrix(x: 7, y: 5, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "garbage", color: "Red", position: matrix(x: 3, y: 5, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "garbage", color: "Blue", position: matrix(x: 6, y: 3, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "garbage", color: "Yellow", position: matrix(x: 4, y: 2, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "garbageGreen", position: matrix(x: 7, y: 5, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "garbageRed", position: matrix(x: 3, y: 5, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "garbageBlue", position: matrix(x: 6, y: 3, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "garbageYellow", position: matrix(x: 4, y: 2, xRange, yRange)))
         
         // bins
-        gameMap.addChild(self.newObject(name: "bin", color: "Blue", position: matrix(x: 6, y: 2, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "bin", color: "Green", position: matrix(x: 1, y: 1, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "bin", color: "Red", position: matrix(x: 3, y: 6, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "bin", color: "Yellow", position: matrix(x: 8, y: 5, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "binBlue", position: matrix(x: 6, y: 2, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "binGreen", position: matrix(x: 1, y: 1, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "binRed", position: matrix(x: 3, y: 6, xRange, yRange)))
+        gameMap.addChild(self.newObject(name: "binYellow", position: matrix(x: 8, y: 5, xRange, yRange)))
         
         // player
         let player = self.createPlayer(imageNamed: "playerFront", position: CGPoint(x: xMiddle, y: yMiddle))
@@ -223,25 +234,10 @@ public class GameScene: SKScene {
         object.position = position
         object.name = name
         
-        if name == "garbage" {
+        if name.prefix(7) == "garbage" {
             object.zPosition = 1
         } else {
             object.zPosition = 0
-        }
-        
-        return object
-    }
-    
-    func newObject (name: String, color: String, position: CGPoint) -> SKSpriteNode {
-        let object = SKSpriteNode(imageNamed: "\(name)\(color)")
-        
-        object.position = position
-        object.name = name
-        
-        if name == "bin" {
-            object.zPosition = 0
-        } else {
-            object.zPosition = 1
         }
         
         return object
