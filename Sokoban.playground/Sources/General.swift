@@ -12,10 +12,10 @@ let arrowLeftPos = CGPoint(x: 288, y: -160)
 let arrowUpPos = CGPoint(x: 352, y: -96)
 
 
-func createLabel (text: String, position: CGPoint, alignment: SKLabelHorizontalAlignmentMode = SKLabelHorizontalAlignmentMode.center) -> SKLabelNode {
+func createLabel (text: String, position: CGPoint, size: CGFloat = 18, alignment: SKLabelHorizontalAlignmentMode = SKLabelHorizontalAlignmentMode.center) -> SKLabelNode {
     let label = SKLabelNode(fontNamed: "PressStart2P-Regular")
     label.text = text
-    label.fontSize = 18
+    label.fontSize = size
     label.position = position
     label.horizontalAlignmentMode = alignment
     
@@ -28,4 +28,13 @@ func createObject (folder: String = "", name: String, position: CGPoint) -> SKSp
     object.name = name
     
     return object
+}
+
+func createPlayer (imageNamed name: String, position: CGPoint) -> SKSpriteNode {
+    let player = SKSpriteNode(imageNamed: "Player/\(name)")
+    player.name = "player"
+    player.position = position
+    player.zPosition = 2
+    
+    return player
 }

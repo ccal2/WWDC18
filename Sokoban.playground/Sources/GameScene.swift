@@ -88,7 +88,7 @@ class GameScene: SKScene {
                     self.movement(object: player, x, y)
                     
                     // delay
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                         // remove the garbage
                         node.removeFromParent()
                         
@@ -227,7 +227,7 @@ class GameScene: SKScene {
         gameMap.addChild(self.createObject(folder: "Bins/", name: "binYellow", position: matrix(x: 8, y: 5, xRange, yRange)))
         
         // player
-        let player = self.createPlayer(imageNamed: "playerFront", position: CGPoint(x: xMiddle, y: yMiddle))
+        let player = createPlayer(imageNamed: "playerFront", position: CGPoint(x: xMiddle, y: yMiddle))
         gameMap.addChild(player)
         
         // limit the players's movements according to the map
@@ -250,15 +250,6 @@ class GameScene: SKScene {
         }
         
         return object
-    }
-
-    func createPlayer (imageNamed name: String, position: CGPoint) -> SKSpriteNode {
-        let player = SKSpriteNode(imageNamed: "Player/\(name)")
-        player.name = "player"
-        player.position = position
-        player.zPosition = 2
-        
-        return player
     }
 }
 
