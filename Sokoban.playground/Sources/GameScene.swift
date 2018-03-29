@@ -11,7 +11,7 @@ class GameScene: SKScene {
     var garbageCount: Int = 0
     var garbageOutCount: Int = 0
     
-    public override func didMove (to view: SKView) {
+    override func didMove (to view: SKView) {
         self.loadLegend()
         self.loadButtons()
         self.loadGameMap()
