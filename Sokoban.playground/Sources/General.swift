@@ -3,8 +3,8 @@ import SpriteKit
 // screen size = 1024 x 768
 
 // position of the buttons
-let startButtonPos = CGPoint(x: 0, y: -160)
-let tutorialButtonPos = CGPoint(x: 0, y: -288)
+let startButtonPos = CGPoint(x: 0, y: -96)
+let tutorialButtonPos = CGPoint(x: 0, y: -224)
 let restartButtonPos = CGPoint(x: 0, y: -96)
 
 let arrowRightPos = CGPoint(x: 416, y: -160)

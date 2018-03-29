@@ -13,16 +13,16 @@ public class InitialScene: SKScene {
     
     func showAnimation () {
         // add player
-        let player = createPlayer(imageNamed: "playerFront", position: CGPoint(x: -160, y: 96))
+        let player = createPlayer(imageNamed: "playerFront", position: CGPoint(x: -160, y: 160))
         self.addChild(player)
         
         // add garbage
-        let garbage = createObject(folder: "Garbages/", name: "garbageBlue", position: CGPoint(x: -32, y: 96))
+        let garbage = createObject(folder: "Garbages/", name: "garbageBlue", position: CGPoint(x: -32, y: 160))
         garbage.zPosition = 1
         self.addChild(garbage)
         
         // add bin
-        self.addChild(createObject(folder: "Bins/", name: "binBlue", position: CGPoint(x: 160, y: 96)))
+        self.addChild(createObject(folder: "Bins/", name: "binBlue", position: CGPoint(x: 160, y: 160)))
         
         let actionPlayer = SKAction.sequence([SKAction.moveBy(x: 256, y: 0, duration: 3), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.moveBy(x: -256, y: 0, duration: 0), SKAction.moveBy(x: 0, y: 0, duration: 1)])
         let actionBargage = SKAction.sequence([SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.moveBy(x: 192, y: 0, duration: 2), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.unhide(), SKAction.moveBy(x: -192, y: 0, duration: 0), SKAction.moveBy(x: 0, y: 0, duration: 1)])

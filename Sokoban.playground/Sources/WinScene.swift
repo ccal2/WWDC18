@@ -3,22 +3,27 @@ import SpriteKit
 
 class WinScene: SKScene {
     public override func didMove (to view: SKView) {
-        self.addChild(createLabel(text: "Congratulations! You've cleaned the park", position: CGPoint(x: 0, y: 96)))
+        self.addChild(createLabel(text: "Congratulations! You've cleaned the park", position: CGPoint(x: 0, y: 96), size: 24))
         
-        self.addChild(createObject(name: "temp", position: restartButtonPos))
+        self.loadButton()
+    }
+    
+    func loadButton () {
+        self.addChild(createLabel(text: "Restart", position: restartButtonPos))
     }
     
     func touchButton (atPoint pos: CGPoint) {
-        // highlight
-        self.addChild(createObject(name: "temp_h", position: restartButtonPos))
+        let button = self.atPoint(pos)
         
-        let scene = GameScene(fileNamed: "Scene")!
-        scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
-        scene.scaleMode = .aspectFill
-        
-        let transition = SKTransition.fade(with: #colorLiteral(red: 0.645771694, green: 0.2032078091, blue: 0.3298983863, alpha: 1), duration: 1)
-        
-        self.view?.presentScene(scene, transition: transition)
+        if button.name == "Restart" {
+            let scene = GameScene(fileNamed: "Scene")!
+            scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
+            scene.scaleMode = .aspectFill
+            
+            let transition = SKTransition.fade(with: #colorLiteral(red: 0.645771694, green: 0.2032078091, blue: 0.3298983863, alpha: 1), duration: 1)
+            
+            self.view?.presentScene(scene, transition: transition)
+        }
     }
     
     func Highlight (atPoint pos: CGPoint) {

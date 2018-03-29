@@ -2,10 +2,11 @@ import SpriteKit
 
 public class TutorialScene: SKScene {
     public override func didMove (to view: SKView) {
-        
+        self.loadButton()
     }
     
-    func loadButtons () {
+    func loadButton () {
+        
     }
     
     func touchButton (atPoint pos: CGPoint) {
@@ -19,7 +20,7 @@ public class TutorialScene: SKScene {
     func Highlight (atPoint pos: CGPoint) {
         let button = self.atPoint(startButtonPos)
         
-        if button.name == "temp_h" {
+        if button.name == "_h" {
             button.removeFromParent()
         }
     }
