@@ -96,7 +96,7 @@ class GameScene: SKScene {
                         
                         if self.garbageOutCount == 0 {
                             let scene = WinScene(fileNamed: "Scene")!
-                            scene.backgroundColor = #colorLiteral(red: 0.5480121216, green: 0.3523743953, blue: 0.7093039155, alpha: 1)
+                            scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
                             scene.scaleMode = .aspectFill
                             
                             // delay
@@ -215,11 +215,11 @@ class GameScene: SKScene {
         gameMap.addChild(self.createObject(folder: "", name: "tree", position: matrix(x: 5, y: 1, xRange, yRange)))
         
         // garbages
-        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageGreen", position: matrix(x: 7, y: 5, xRange, yRange)))
-        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageRed", position: matrix(x: 3, y: 5, xRange, yRange)))
+//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageGreen", position: matrix(x: 7, y: 5, xRange, yRange)))
+//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageRed", position: matrix(x: 3, y: 5, xRange, yRange)))
         gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageBlue", position: matrix(x: 6, y: 3, xRange, yRange)))
-        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageBlue", position: matrix(x: 7, y: 2, xRange, yRange)))
-        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageYellow", position: matrix(x: 4, y: 2, xRange, yRange)))
+//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageBlue", position: matrix(x: 7, y: 2, xRange, yRange)))
+//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageYellow", position: matrix(x: 4, y: 2, xRange, yRange)))
         self.garbageOutCount = self.garbageCount
         
         // bins

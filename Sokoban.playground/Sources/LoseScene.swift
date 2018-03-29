@@ -3,12 +3,14 @@ import SpriteKit
 
 class LoseScene: SKScene {
     public override func didMove (to view: SKView) {
-        createButton(imageNamed: "temp", position: restartButtonPos)
+        self.addChild(createObject(folder: "", name: "temp", position: restartButtonPos))
+//        createButton(imageNamed: "temp", position: restartButtonPos)
     }
     
     func touchButton (atPoint pos: CGPoint) {
         // highlight
-        self.createButton(imageNamed: "temp_h", position: restartButtonPos)
+        self.addChild(createObject(folder: "", name: "temp_h", position: restartButtonPos))
+//        self.createButton(imageNamed: "temp_h", position: restartButtonPos)
         
         let scene = GameScene(fileNamed: "Scene")!
         scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
@@ -38,14 +40,6 @@ class LoseScene: SKScene {
         for t in touches {
             Highlight(atPoint: t.location(in: self))
         }
-    }
-    
-    func createButton (imageNamed name: String, position: CGPoint) {
-        let button = SKSpriteNode(imageNamed: name)
-        button.name = name
-        button.position = position
-        
-        self.addChild(button)
     }
 }
 

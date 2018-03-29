@@ -3,8 +3,8 @@ import SpriteKit
 // screen size = 1024 x 768
 
 // position of the buttons
-let startButtonPos = CGPoint(x: 0, y: -64)
-let restartButtonPos = CGPoint(x: 0, y: -64)
+let startButtonPos = CGPoint(x: 0, y: -96)
+let restartButtonPos = CGPoint(x: 0, y: -96)
 
 let arrowRightPos = CGPoint(x: 416, y: -160)
 let arrowDownPos = CGPoint(x: 352, y: -224)
@@ -20,4 +20,12 @@ func createLabel (text: String, position: CGPoint) -> SKLabelNode {
     label.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
     
     return label
+}
+
+func createObject (folder: String, name: String, position: CGPoint) -> SKSpriteNode {
+    let object = SKSpriteNode(imageNamed: "\(folder)\(name)")
+    object.position = position
+    object.name = name
+    
+    return object
 }
