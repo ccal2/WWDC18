@@ -1,27 +1,17 @@
 import PlaygroundSupport
 import SpriteKit
 
-// 1024 x 768
-
+// game constants
 let tileSize: CGFloat = 64
 let columns: CGFloat = 10
 let lines: CGFloat = 8
 let frames: CGFloat = 4
 
-var arrowLeftPos = CGPoint(x: 0, y: 0)
-var arrowDownPos = CGPoint(x: 0, y: 0)
-var arrowUpPos = CGPoint(x: 0, y: 0)
-var arrowRightPos = CGPoint(x: 0, y: 0)
-
-public class GameScene: SKScene {
-    var garbageCount: Int = 5
+class GameScene: SKScene {
+    var garbageCount: Int = 0
+    var garbageOutCount: Int = 0
     
     public override func didMove (to view: SKView) {
-        arrowLeftPos = CGPoint(x: 288, y: -160)
-        arrowDownPos = CGPoint(x: 352, y: -224)
-        arrowUpPos = CGPoint(x: 352, y: -96)
-        arrowRightPos = CGPoint(x: 416, y: -160)
-        
         self.loadLegend()
         self.loadButtons()
         self.loadGameMap()
@@ -47,7 +37,7 @@ public class GameScene: SKScene {
         }
     }
     
-    func touchEnd (atPoint pos: CGPoint) {
+    func Highlight (atPoint pos: CGPoint) {
         let button = self.atPoint(pos)
         
         if button.name == "arrowLeft_h" || button.name == "arrowRight_h" || button.name == "arrowUp_h" || button.name == "arrowDown_h" {
@@ -63,7 +53,7 @@ public class GameScene: SKScene {
     
     public override func touchesEnded (_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
-            touchEnd(atPoint: t.location(in: self))
+            Highlight(atPoint: t.location(in: self))
         }
     }
     
@@ -102,15 +92,16 @@ public class GameScene: SKScene {
                         // remove the garbage
                         node.removeFromParent()
                         
-                        self.garbageCount -= 1
+                        self.garbageOutCount -= 1
                         
-                        if self.garbageCount == 0 {
-                            let wonScene = SKScene(fileNamed: "Scene")!
-                            wonScene.backgroundColor = #colorLiteral(red: 0.5480121216, green: 0.3523743953, blue: 0.7093039155, alpha: 1)
+                        if self.garbageOutCount == 0 {
+                            let scene = WinScene(fileNamed: "Scene")!
+                            scene.backgroundColor = #colorLiteral(red: 0.5480121216, green: 0.3523743953, blue: 0.7093039155, alpha: 1)
+                            scene.scaleMode = .aspectFill
                             
                             // delay
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                self.view?.presentScene(wonScene)
+                                self.view?.presentScene(scene)
                             }
                         }
                     }
@@ -144,12 +135,13 @@ public class GameScene: SKScene {
                 }
                 
                 if lost {
-                    let lostScene = SKScene(fileNamed: "Scene")!
-                    lostScene.backgroundColor = #colorLiteral(red: 0.3287855243, green: 0.3323060302, blue: 0.3478847121, alpha: 1)
+                    let scene = LoseScene(fileNamed: "Scene")!
+                    scene.backgroundColor = #colorLiteral(red: 0.3287855243, green: 0.3323060302, blue: 0.3478847121, alpha: 1)
+                    scene.scaleMode = .aspectFill
                     
                     // delay
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.view?.presentScene(lostScene)
+                        self.view?.presentScene(scene)
                     }
                 }
             }
@@ -167,10 +159,10 @@ public class GameScene: SKScene {
     
     func loadLegend () {
         // icons
-        self.addChild(self.newObject(folder: "Bins", name: "binBlue", position: CGPoint(x: 256, y: 240)))
-        self.addChild(self.newObject(folder: "Bins", name: "binGreen", position: CGPoint(x: 256, y: 176)))
-        self.addChild(self.newObject(folder: "Bins", name: "binRed", position: CGPoint(x: 256, y: 112)))
-        self.addChild(self.newObject(folder: "Bins", name: "binYellow", position: CGPoint(x: 256, y: 48)))
+        self.addChild(self.newObject(folder: "Bins/", name: "binBlue", position: CGPoint(x: 256, y: 240)))
+        self.addChild(self.newObject(folder: "Bins/", name: "binGreen", position: CGPoint(x: 256, y: 176)))
+        self.addChild(self.newObject(folder: "Bins/", name: "binRed", position: CGPoint(x: 256, y: 112)))
+        self.addChild(self.newObject(folder: "Bins/", name: "binYellow", position: CGPoint(x: 256, y: 48)))
         
         // names
         self.createLabel(text: "Paper", position: CGPoint(x: 307, y: 224))
@@ -203,37 +195,38 @@ public class GameScene: SKScene {
         // trees
         for i in 0...(Int(columns)-1) {
             let j = CGFloat(i)
-            gameMap.addChild(self.newObject(name: "tree", position: matrix(x: j, y: 0, xRange, yRange)))
-            gameMap.addChild(self.newObject(name: "tree", position: matrix(x: j, y: lines-1, xRange, yRange)))
+            gameMap.addChild(self.newObject(folder: "", name: "tree", position: matrix(x: j, y: 0, xRange, yRange)))
+            gameMap.addChild(self.newObject(folder: "", name: "tree", position: matrix(x: j, y: lines-1, xRange, yRange)))
         }
         
         for i in 1...(Int(lines)-2) {
             let j = CGFloat(i)
-            gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 0, y: j, xRange, yRange)))
-            gameMap.addChild(self.newObject(name: "tree", position: matrix(x: columns-1, y: j, xRange, yRange)))
+            gameMap.addChild(self.newObject(folder: "", name: "tree", position: matrix(x: 0, y: j, xRange, yRange)))
+            gameMap.addChild(self.newObject(folder: "", name: "tree", position: matrix(x: columns-1, y: j, xRange, yRange)))
         }
         
-        gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 8, y: 6, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 1, y: 5, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 2, y: 5, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 4, y: 5, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 5, y: 5, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 8, y: 4, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 1, y: 3, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 5, y: 1, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "", name: "tree", position: matrix(x: 8, y: 6, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "", name: "tree", position: matrix(x: 1, y: 5, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "", name: "tree", position: matrix(x: 2, y: 5, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "", name: "tree", position: matrix(x: 4, y: 5, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "", name: "tree", position: matrix(x: 5, y: 5, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "", name: "tree", position: matrix(x: 8, y: 4, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "", name: "tree", position: matrix(x: 1, y: 3, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "", name: "tree", position: matrix(x: 5, y: 1, xRange, yRange)))
         
         // garbages
-        gameMap.addChild(self.newObject(folder: "Garbages", name: "garbageGreen", position: matrix(x: 7, y: 5, xRange, yRange)))
-        gameMap.addChild(self.newObject(folder: "Garbages", name: "garbageRed", position: matrix(x: 3, y: 5, xRange, yRange)))
-        gameMap.addChild(self.newObject(folder: "Garbages", name: "garbageBlue", position: matrix(x: 6, y: 3, xRange, yRange)))
-        gameMap.addChild(self.newObject(folder: "Garbages", name: "garbageBlue", position: matrix(x: 7, y: 2, xRange, yRange)))
-        gameMap.addChild(self.newObject(folder: "Garbages", name: "garbageYellow", position: matrix(x: 4, y: 2, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Garbages/", name: "garbageGreen", position: matrix(x: 7, y: 5, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Garbages/", name: "garbageRed", position: matrix(x: 3, y: 5, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Garbages/", name: "garbageBlue", position: matrix(x: 6, y: 3, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Garbages/", name: "garbageBlue", position: matrix(x: 7, y: 2, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Garbages/", name: "garbageYellow", position: matrix(x: 4, y: 2, xRange, yRange)))
+        self.garbageOutCount = self.garbageCount
         
         // bins
-        gameMap.addChild(self.newObject(folder: "Bins", name: "binBlue", position: matrix(x: 6, y: 2, xRange, yRange)))
-        gameMap.addChild(self.newObject(folder: "Bins", name: "binGreen", position: matrix(x: 1, y: 1, xRange, yRange)))
-        gameMap.addChild(self.newObject(folder: "Bins", name: "binRed", position: matrix(x: 3, y: 6, xRange, yRange)))
-        gameMap.addChild(self.newObject(folder: "Bins", name: "binYellow", position: matrix(x: 8, y: 5, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Bins/", name: "binBlue", position: matrix(x: 6, y: 2, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Bins/", name: "binGreen", position: matrix(x: 1, y: 1, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Bins/", name: "binRed", position: matrix(x: 3, y: 6, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Bins/", name: "binYellow", position: matrix(x: 8, y: 5, xRange, yRange)))
         
         // player
         let player = self.createPlayer(imageNamed: "playerFront", position: CGPoint(x: xMiddle, y: yMiddle))
@@ -247,26 +240,13 @@ public class GameScene: SKScene {
     }
     
     func newObject (folder: String, name: String, position: CGPoint) -> SKSpriteNode {
-        let object = SKSpriteNode(imageNamed: "\(folder)/\(name)")
+        let object = SKSpriteNode(imageNamed: "\(folder)\(name)")
         object.position = position
         object.name = name
         
         if name.prefix(7) == "garbage" {
             object.zPosition = 1
-        } else {
-            object.zPosition = 0
-        }
-        
-        return object
-    }
-    
-    func newObject (name: String, position: CGPoint) -> SKSpriteNode {
-        let object = SKSpriteNode(imageNamed: name)
-        object.position = position
-        object.name = name
-        
-        if name.prefix(7) == "garbage" {
-            object.zPosition = 1
+            self.garbageCount += 1
         } else {
             object.zPosition = 0
         }
