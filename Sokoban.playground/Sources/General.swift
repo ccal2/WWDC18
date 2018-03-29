@@ -11,6 +11,7 @@ let arrowDownPos = CGPoint(x: 352, y: -224)
 let arrowLeftPos = CGPoint(x: 288, y: -160)
 let arrowUpPos = CGPoint(x: 352, y: -96)
 
+// functions
 
 func createLabel (text: String, position: CGPoint, size: CGFloat = 18, alignment: SKLabelHorizontalAlignmentMode = SKLabelHorizontalAlignmentMode.center) -> SKLabelNode {
     let label = SKLabelNode(fontNamed: "PressStart2P-Regular")

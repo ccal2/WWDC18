@@ -5,7 +5,7 @@ import SpriteKit
 let tileSize: CGFloat = 64
 let columns: CGFloat = 10
 let lines: CGFloat = 8
-let frames: CGFloat = 4
+let frames: CGFloat = 4 // divisor 64
 
 class GameScene: SKScene {
     var garbageCount: Int = 0
