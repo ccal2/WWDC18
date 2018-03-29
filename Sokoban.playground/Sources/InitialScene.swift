@@ -3,6 +3,8 @@ import SpriteKit
 
 public class InitialScene: SKScene {
     public override func didMove (to view: SKView) {
+        self.addChild(createLabel(text: "Name of the game", position: CGPoint(x: 0, y: 96)))
+        
         self.addChild(createObject(name: "temp", position: startButtonPos))
     }
     
@@ -13,11 +15,10 @@ public class InitialScene: SKScene {
         let scene = GameScene(fileNamed: "Scene")!
         scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
         scene.scaleMode = .aspectFill
+
+        let transition = SKTransition.fade(with: #colorLiteral(red: 0.645771694, green: 0.2032078091, blue: 0.3298983863, alpha: 1), duration: 1)
         
-        // delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.view?.presentScene(scene)
-        }
+        self.view?.presentScene(scene, transition: transition)
     }
     
     func Highlight (atPoint pos: CGPoint) {
@@ -38,14 +39,6 @@ public class InitialScene: SKScene {
         for t in touches {
             Highlight(atPoint: t.location(in: self))
         }
-    }
-    
-    func createButton (imageNamed name: String, position: CGPoint) {
-        let button = SKSpriteNode(imageNamed: name)
-        button.name = name
-        button.position = position
-        
-        self.addChild(button)
     }
 }
 

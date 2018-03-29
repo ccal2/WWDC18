@@ -99,10 +99,9 @@ class GameScene: SKScene {
                             scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
                             scene.scaleMode = .aspectFill
                             
-                            // delay
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                self.view?.presentScene(scene)
-                            }
+                            let transition = SKTransition.fade(with: #colorLiteral(red: 0.645771694, green: 0.2032078091, blue: 0.3298983863, alpha: 1), duration: 1)
+                            
+                            self.view?.presentScene(scene, transition: transition)
                         }
                     }
                 }
@@ -139,10 +138,9 @@ class GameScene: SKScene {
                     scene.backgroundColor = #colorLiteral(red: 0.3287855243, green: 0.3323060302, blue: 0.3478847121, alpha: 1)
                     scene.scaleMode = .aspectFill
                     
-                    // delay
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.view?.presentScene(scene)
-                    }
+                    let transition = SKTransition.fade(with: #colorLiteral(red: 0.3287855243, green: 0.3323060302, blue: 0.3478847121, alpha: 1), duration: 1)
+                    
+                    self.view?.presentScene(scene, transition: transition)
                 }
             }
             
@@ -165,10 +163,10 @@ class GameScene: SKScene {
         self.addChild(self.createObject(folder: "Bins/", name: "binYellow", position: CGPoint(x: 256, y: 48)))
         
         // names
-        self.addChild(createLabel(text: "Paper", position: CGPoint(x: 307, y: 224)))
-        self.addChild(createLabel(text: "Glass", position: CGPoint(x: 307, y: 160)))
-        self.addChild(createLabel(text: "Plastic", position: CGPoint(x: 307, y: 96)))
-        self.addChild(createLabel(text: "Metal", position: CGPoint(x: 307, y: 32)))
+        self.addChild(createLabel(text: "Paper", position: CGPoint(x: 307, y: 224), alignment: SKLabelHorizontalAlignmentMode.left))
+        self.addChild(createLabel(text: "Glass", position: CGPoint(x: 307, y: 160), alignment: SKLabelHorizontalAlignmentMode.left))
+        self.addChild(createLabel(text: "Plastic", position: CGPoint(x: 307, y: 96), alignment: SKLabelHorizontalAlignmentMode.left))
+        self.addChild(createLabel(text: "Metal", position: CGPoint(x: 307, y: 32), alignment: SKLabelHorizontalAlignmentMode.left))
     }
     
     func loadButtons () {

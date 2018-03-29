@@ -3,6 +3,8 @@ import SpriteKit
 
 class LoseScene: SKScene {
     public override func didMove (to view: SKView) {
+        self.addChild(createLabel(text: "Oh no! You've got trapped", position: CGPoint(x: 0, y: 96)))
+        
         self.addChild(createObject(name: "temp", position: restartButtonPos))
     }
     
@@ -14,10 +16,9 @@ class LoseScene: SKScene {
         scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
         scene.scaleMode = .aspectFill
         
-        // delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.view?.presentScene(scene)
-        }
+        let transition = SKTransition.fade(with: #colorLiteral(red: 0.645771694, green: 0.2032078091, blue: 0.3298983863, alpha: 1), duration: 1)
+        
+        self.view?.presentScene(scene, transition: transition)
     }
     
     func Highlight (atPoint pos: CGPoint) {
