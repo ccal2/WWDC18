@@ -3,14 +3,12 @@ import SpriteKit
 
 public class InitialScene: SKScene {
     public override func didMove (to view: SKView) {
-        self.addChild(createObject(folder: "", name: "temp", position: startButtonPos))
-//        createButton(imageNamed: "temp", position: startButtonPos)
+        self.addChild(createObject(name: "temp", position: startButtonPos))
     }
     
     func touchButton (atPoint pos: CGPoint) {
         // highlight
-        self.addChild(createObject(folder: "", name: "temp_h", position: startButtonPos))
-//        self.createButton(imageNamed: "temp_h", position: startButtonPos)
+        self.addChild(createObject(name: "temp_h", position: startButtonPos))
         
         let scene = GameScene(fileNamed: "Scene")!
         scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)

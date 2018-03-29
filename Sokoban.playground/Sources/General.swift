@@ -22,7 +22,7 @@ func createLabel (text: String, position: CGPoint) -> SKLabelNode {
     return label
 }
 
-func createObject (folder: String, name: String, position: CGPoint) -> SKSpriteNode {
+func createObject (folder: String = "", name: String, position: CGPoint) -> SKSpriteNode {
     let object = SKSpriteNode(imageNamed: "\(folder)\(name)")
     object.position = position
     object.name = name

@@ -195,24 +195,24 @@ class GameScene: SKScene {
         // trees
         for i in 0...(Int(columns)-1) {
             let j = CGFloat(i)
-            gameMap.addChild(self.createObject(folder: "", name: "tree", position: matrix(x: j, y: 0, xRange, yRange)))
-            gameMap.addChild(self.createObject(folder: "", name: "tree", position: matrix(x: j, y: lines-1, xRange, yRange)))
+            gameMap.addChild(self.createObject(name: "tree", position: matrix(x: j, y: 0, xRange, yRange)))
+            gameMap.addChild(self.createObject(name: "tree", position: matrix(x: j, y: lines-1, xRange, yRange)))
         }
         
         for i in 1...(Int(lines)-2) {
             let j = CGFloat(i)
-            gameMap.addChild(self.createObject(folder: "", name: "tree", position: matrix(x: 0, y: j, xRange, yRange)))
-            gameMap.addChild(self.createObject(folder: "", name: "tree", position: matrix(x: columns-1, y: j, xRange, yRange)))
+            gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 0, y: j, xRange, yRange)))
+            gameMap.addChild(self.createObject(name: "tree", position: matrix(x: columns-1, y: j, xRange, yRange)))
         }
         
-        gameMap.addChild(self.createObject(folder: "", name: "tree", position: matrix(x: 8, y: 6, xRange, yRange)))
-        gameMap.addChild(self.createObject(folder: "", name: "tree", position: matrix(x: 1, y: 5, xRange, yRange)))
-        gameMap.addChild(self.createObject(folder: "", name: "tree", position: matrix(x: 2, y: 5, xRange, yRange)))
-        gameMap.addChild(self.createObject(folder: "", name: "tree", position: matrix(x: 4, y: 5, xRange, yRange)))
-        gameMap.addChild(self.createObject(folder: "", name: "tree", position: matrix(x: 5, y: 5, xRange, yRange)))
-        gameMap.addChild(self.createObject(folder: "", name: "tree", position: matrix(x: 8, y: 4, xRange, yRange)))
-        gameMap.addChild(self.createObject(folder: "", name: "tree", position: matrix(x: 1, y: 3, xRange, yRange)))
-        gameMap.addChild(self.createObject(folder: "", name: "tree", position: matrix(x: 5, y: 1, xRange, yRange)))
+        gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 8, y: 6, xRange, yRange)))
+        gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 1, y: 5, xRange, yRange)))
+        gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 2, y: 5, xRange, yRange)))
+        gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 4, y: 5, xRange, yRange)))
+        gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 5, y: 5, xRange, yRange)))
+        gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 8, y: 4, xRange, yRange)))
+        gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 1, y: 3, xRange, yRange)))
+        gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 5, y: 1, xRange, yRange)))
         
         // garbages
 //        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageGreen", position: matrix(x: 7, y: 5, xRange, yRange)))
@@ -239,7 +239,7 @@ class GameScene: SKScene {
         self.addChild(gameMap)
     }
     
-    func createObject (folder: String, name: String, position: CGPoint) -> SKSpriteNode {
+    func createObject (folder: String = "", name: String, position: CGPoint) -> SKSpriteNode {
         let object = SKSpriteNode(imageNamed: "\(folder)\(name)")
         object.position = position
         object.name = name
