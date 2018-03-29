@@ -3,7 +3,8 @@ import SpriteKit
 // screen size = 1024 x 768
 
 // position of the buttons
-let startButtonPos = CGPoint(x: 0, y: -96)
+let startButtonPos = CGPoint(x: 0, y: -160)
+let tutorialButtonPos = CGPoint(x: 0, y: -288)
 let restartButtonPos = CGPoint(x: 0, y: -96)
 
 let arrowRightPos = CGPoint(x: 416, y: -160)
@@ -15,6 +16,7 @@ let arrowUpPos = CGPoint(x: 352, y: -96)
 
 func createLabel (text: String, position: CGPoint, size: CGFloat = 18, alignment: SKLabelHorizontalAlignmentMode = SKLabelHorizontalAlignmentMode.center) -> SKLabelNode {
     let label = SKLabelNode(fontNamed: "PressStart2P-Regular")
+    label.name = text
     label.text = text
     label.fontSize = size
     label.position = position

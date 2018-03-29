@@ -3,8 +3,12 @@ import SpriteKit
 public class InitialScene: SKScene {
     public override func didMove (to view: SKView) {
         self.showAnimation()
-        
-        self.addChild(createObject(name: "temp", position: startButtonPos))
+        self.loadButtons()
+    }
+    
+    func loadButtons () {
+        self.addChild(createLabel(text: "Play", position: startButtonPos))
+        self.addChild(createLabel(text: "Tutorial", position: tutorialButtonPos))
     }
     
     func showAnimation () {
@@ -31,16 +35,17 @@ public class InitialScene: SKScene {
     }
     
     func touchButton (atPoint pos: CGPoint) {
-        // highlight
-        self.addChild(createObject(name: "temp_h", position: startButtonPos))
+        let button = self.atPoint(pos)
         
-        let scene = GameScene(fileNamed: "Scene")!
-        scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
-        scene.scaleMode = .aspectFill
-
-        let transition = SKTransition.fade(with: #colorLiteral(red: 0.645771694, green: 0.2032078091, blue: 0.3298983863, alpha: 1), duration: 1)
-        
-        self.view?.presentScene(scene, transition: transition)
+        if button.name == "Play" {
+            let scene = GameScene(fileNamed: "Scene")!
+            scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
+            scene.scaleMode = .aspectFill
+            
+            let transition = SKTransition.fade(with: #colorLiteral(red: 0.645771694, green: 0.2032078091, blue: 0.3298983863, alpha: 1), duration: 1)
+            
+            self.view?.presentScene(scene, transition: transition)
+        }
     }
     
     func Highlight (atPoint pos: CGPoint) {
