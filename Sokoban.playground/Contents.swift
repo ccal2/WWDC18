@@ -1,6 +1,10 @@
 import PlaygroundSupport
 import SpriteKit
 
+// Font
+let cfURL = Bundle.main.url(forResource: "PressStart2P-Regular", withExtension: "ttf")! as CFURL
+CTFontManagerRegisterFontsForURL(cfURL, CTFontManagerScope.process, nil)
+
 // Load the SKScene from 'GameScene.sks'
 let sceneView = SKView(frame: CGRect(x: 0, y: 0, width: 640, height: 480))
 if let scene = GameScene(fileNamed: "Scene") {

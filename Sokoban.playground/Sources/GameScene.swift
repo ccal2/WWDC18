@@ -1,6 +1,8 @@
 import PlaygroundSupport
 import SpriteKit
 
+// 1024 x 768
+
 let tileSize: CGFloat = 64
 let columns: CGFloat = 10
 let lines: CGFloat = 8
@@ -15,13 +17,14 @@ public class GameScene: SKScene {
     var emptyBins: Int = 4
     
     public override func didMove (to view: SKView) {
-        arrowLeftPos = CGPoint(x: (scene?.size.width)! * 0.3, y: 0)
-        arrowDownPos = CGPoint(x: (scene?.size.width)! * 0.35, y: (scene?.size.height)! * -0.065)
-        arrowUpPos = CGPoint(x: (scene?.size.width)! * 0.35, y: (scene?.size.height)! * 0.065)
-        arrowRightPos = CGPoint(x: (scene?.size.width)! * 0.4, y: 0)
+        arrowLeftPos = CGPoint(x: 288, y: -160)
+        arrowDownPos = CGPoint(x: 352, y: -224)
+        arrowUpPos = CGPoint(x: 352, y: -96)
+        arrowRightPos = CGPoint(x: 416, y: -160)
         
-        loadButtons()
-        loadGameMap()
+        self.loadLegend()
+        self.loadButtons()
+        self.loadGameMap()
     }
 
     func touchButton (atPoint pos: CGPoint) {
@@ -97,7 +100,7 @@ public class GameScene: SKScene {
                     // delay
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                         // change the color of the bin
-                        gameMap.addChild(self.newObject(name: "fullBin", position: other_node.position))
+                        gameMap.addChild(self.newObject(folder: "Bins", name: "fullBin", position: other_node.position))
                         
                         // remove empty bin and garbage from parent
                         other_node.removeFromParent()
@@ -163,6 +166,20 @@ public class GameScene: SKScene {
         }
     }
     
+    func loadLegend () {
+        // icons
+        self.addChild(self.newObject(folder: "Bins", name: "binBlue", position: CGPoint(x: 256, y: 240)))
+        self.addChild(self.newObject(folder: "Bins", name: "binGreen", position: CGPoint(x: 256, y: 176)))
+        self.addChild(self.newObject(folder: "Bins", name: "binRed", position: CGPoint(x: 256, y: 112)))
+        self.addChild(self.newObject(folder: "Bins", name: "binYellow", position: CGPoint(x: 256, y: 48)))
+        
+        // names
+        self.createLabel(text: "Paper", position: CGPoint(x: 307, y: 224))
+        self.createLabel(text: "Glass", position: CGPoint(x: 307, y: 160))
+        self.createLabel(text: "Plastic", position: CGPoint(x: 307, y: 96))
+        self.createLabel(text: "Metal", position: CGPoint(x: 307, y: 32))
+    }
+    
     func loadButtons () {
         createButton(imageNamed: "arrowLeft", position: arrowLeftPos)
         createButton(imageNamed: "arrowDown", position: arrowDownPos)
@@ -174,7 +191,7 @@ public class GameScene: SKScene {
         // grass background
         let gameMap = SKSpriteNode(imageNamed: "grassMap")
         gameMap.name = "gameMap"
-        gameMap.position = CGPoint(x: (scene?.size.width)! * -0.13, y: 0)
+        gameMap.position = CGPoint(x: -128, y: 0)
         
         // gameMap limits and middle
         let width = gameMap.frame.width - 10 // 10 -> grassMap margins
@@ -207,16 +224,16 @@ public class GameScene: SKScene {
         gameMap.addChild(self.newObject(name: "tree", position: matrix(x: 5, y: 1, xRange, yRange)))
         
         // garbages
-        gameMap.addChild(self.newObject(name: "garbageGreen", position: matrix(x: 7, y: 5, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "garbageRed", position: matrix(x: 3, y: 5, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "garbageBlue", position: matrix(x: 6, y: 3, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "garbageYellow", position: matrix(x: 4, y: 2, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Garbages", name: "garbageGreen", position: matrix(x: 7, y: 5, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Garbages", name: "garbageRed", position: matrix(x: 3, y: 5, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Garbages", name: "garbageBlue", position: matrix(x: 6, y: 3, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Garbages", name: "garbageYellow", position: matrix(x: 4, y: 2, xRange, yRange)))
         
         // bins
-        gameMap.addChild(self.newObject(name: "binBlue", position: matrix(x: 6, y: 2, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "binGreen", position: matrix(x: 1, y: 1, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "binRed", position: matrix(x: 3, y: 6, xRange, yRange)))
-        gameMap.addChild(self.newObject(name: "binYellow", position: matrix(x: 8, y: 5, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Bins", name: "binBlue", position: matrix(x: 6, y: 2, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Bins", name: "binGreen", position: matrix(x: 1, y: 1, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Bins", name: "binRed", position: matrix(x: 3, y: 6, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Bins", name: "binYellow", position: matrix(x: 8, y: 5, xRange, yRange)))
         
         // player
         let player = self.createPlayer(imageNamed: "playerFront", position: CGPoint(x: xMiddle, y: yMiddle))
@@ -227,6 +244,20 @@ public class GameScene: SKScene {
         
         // add to the tree
         self.addChild(gameMap)
+    }
+    
+    func newObject (folder: String, name: String, position: CGPoint) -> SKSpriteNode {
+        let object = SKSpriteNode(imageNamed: "\(folder)/\(name)")
+        object.position = position
+        object.name = name
+        
+        if name.prefix(7) == "garbage" {
+            object.zPosition = 1
+        } else {
+            object.zPosition = 0
+        }
+        
+        return object
     }
     
     func newObject (name: String, position: CGPoint) -> SKSpriteNode {
@@ -244,7 +275,7 @@ public class GameScene: SKScene {
     }
 
     func createPlayer (imageNamed name: String, position: CGPoint) -> SKSpriteNode {
-        let player = SKSpriteNode(imageNamed: name)
+        let player = SKSpriteNode(imageNamed: "Player/\(name)")
         player.name = "player"
         player.position = position
         player.zPosition = 2
@@ -253,14 +284,21 @@ public class GameScene: SKScene {
     }
     
     func createButton (imageNamed name: String, position: CGPoint) {
-        let button = SKSpriteNode(imageNamed: name)
+        let button = SKSpriteNode(imageNamed: "Arrows/\(name)")
         button.name = name
         button.position = position
         
         self.addChild(button)
     }
     
-    
+    func createLabel (text: String, position: CGPoint) {
+        let label = SKLabelNode(fontNamed: "PressStart2P-Regular")
+        label.text = text
+        label.fontSize = 18
+        label.position = position
+        label.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+        self.addChild(label)
+    }
 }
 
 // convert position
