@@ -2,7 +2,6 @@ import SpriteKit
 
 public class InitialScene: SKScene {
     public override func didMove (to view: SKView) {
-        //self.addChild(createLabel(text: "Name of the game", position: CGPoint(x: 0, y: 96), size: 24))
         self.showAnimation()
         
         self.addChild(createObject(name: "temp", position: startButtonPos))
