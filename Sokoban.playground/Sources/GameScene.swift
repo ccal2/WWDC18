@@ -123,6 +123,13 @@ class GameScene: SKScene {
                 for i in 0...(nearNodes.count-1) {
                     if nearNodes[i].name == "tree" {
                         pinned[i] = true
+                    } else if nearNodes[i].name!.prefix(3) == "bin" {
+                        let indexBin = nearNodes[i].name!.index(other_node.name!.startIndex, offsetBy: 3)
+                        let colorBin = nearNodes[i].name![indexBin...]
+                        
+                        if colorBin != colorGarbage {
+                            pinned[i] = true
+                        }
                     }
                 }
                 
@@ -213,11 +220,11 @@ class GameScene: SKScene {
         gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 5, y: 1, xRange, yRange)))
         
         // garbages
-//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageGreen", position: matrix(x: 7, y: 5, xRange, yRange)))
-//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageRed", position: matrix(x: 3, y: 5, xRange, yRange)))
+        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageGreen", position: matrix(x: 7, y: 5, xRange, yRange)))
+        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageRed", position: matrix(x: 3, y: 5, xRange, yRange)))
         gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageBlue", position: matrix(x: 6, y: 3, xRange, yRange)))
-//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageBlue", position: matrix(x: 7, y: 2, xRange, yRange)))
-//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageYellow", position: matrix(x: 4, y: 2, xRange, yRange)))
+        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageBlue", position: matrix(x: 7, y: 2, xRange, yRange)))
+        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageYellow", position: matrix(x: 4, y: 2, xRange, yRange)))
         self.garbageOutCount = self.garbageCount
         
         // bins
