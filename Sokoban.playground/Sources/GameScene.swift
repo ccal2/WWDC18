@@ -14,7 +14,7 @@ var arrowUpPos = CGPoint(x: 0, y: 0)
 var arrowRightPos = CGPoint(x: 0, y: 0)
 
 public class GameScene: SKScene {
-    var emptyBins: Int = 4
+    var garbageCount: Int = 5
     
     public override func didMove (to view: SKView) {
         arrowLeftPos = CGPoint(x: 288, y: -160)
@@ -102,9 +102,9 @@ public class GameScene: SKScene {
                         // remove the garbage
                         node.removeFromParent()
                         
-                        self.emptyBins -= 1
+                        self.garbageCount -= 1
                         
-                        if self.emptyBins == 0 {
+                        if self.garbageCount == 0 {
                             let wonScene = SKScene(fileNamed: "Scene")!
                             wonScene.backgroundColor = #colorLiteral(red: 0.5480121216, green: 0.3523743953, blue: 0.7093039155, alpha: 1)
                             
@@ -226,6 +226,7 @@ public class GameScene: SKScene {
         gameMap.addChild(self.newObject(folder: "Garbages", name: "garbageGreen", position: matrix(x: 7, y: 5, xRange, yRange)))
         gameMap.addChild(self.newObject(folder: "Garbages", name: "garbageRed", position: matrix(x: 3, y: 5, xRange, yRange)))
         gameMap.addChild(self.newObject(folder: "Garbages", name: "garbageBlue", position: matrix(x: 6, y: 3, xRange, yRange)))
+        gameMap.addChild(self.newObject(folder: "Garbages", name: "garbageBlue", position: matrix(x: 7, y: 2, xRange, yRange)))
         gameMap.addChild(self.newObject(folder: "Garbages", name: "garbageYellow", position: matrix(x: 4, y: 2, xRange, yRange)))
         
         // bins
