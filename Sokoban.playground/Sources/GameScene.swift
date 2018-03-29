@@ -22,18 +22,18 @@ class GameScene: SKScene {
         let gameMap = self.childNode(withName: "gameMap")!
         let player = gameMap.childNode(withName: "player")!
         
-        if button.name == "arrowLeft" {
-            self.createButton(imageNamed: "arrowLeft_h", position: arrowLeftPos)
-            self.move("Left", from: player.position, x: -tileSize, y: 0)
-        } else if button.name == "arrowRight" {
-            self.createButton(imageNamed: "arrowRight_h", position: arrowRightPos)
+        if button.name == "arrowRight" {
+            self.addChild(self.newObject(folder: "Arrows/", name: "arrowRight_h", position: arrowRightPos))
             self.move("Right", from: player.position, x: tileSize, y: 0)
-        } else if button.name == "arrowUp" {
-            self.createButton(imageNamed: "arrowUp_h", position: arrowUpPos)
-            self.move("Back", from: player.position, x: 0, y: tileSize)
         } else if button.name == "arrowDown" {
-            self.createButton(imageNamed: "arrowDown_h", position: arrowDownPos)
+            self.addChild(self.newObject(folder: "Arrows/", name: "arrowDown_h", position: arrowDownPos))
             self.move("Front", from: player.position, x: 0, y: -tileSize)
+        } else if button.name == "arrowLeft" {
+            self.addChild(self.newObject(folder: "Arrows/", name: "arrowLeft_h", position: arrowLeftPos))
+            self.move("Left", from: player.position, x: -tileSize, y: 0)
+        } else if button.name == "arrowUp" {
+            self.addChild(self.newObject(folder: "Arrows/", name: "arrowUp_h", position: arrowUpPos))
+            self.move("Back", from: player.position, x: 0, y: tileSize)
         }
     }
     
@@ -172,10 +172,10 @@ class GameScene: SKScene {
     }
     
     func loadButtons () {
-        createButton(imageNamed: "arrowLeft", position: arrowLeftPos)
-        createButton(imageNamed: "arrowDown", position: arrowDownPos)
-        createButton(imageNamed: "arrowUp", position: arrowUpPos)
-        createButton(imageNamed: "arrowRight", position: arrowRightPos)
+        self.addChild(self.newObject(folder: "Arrows/", name: "arrowRight", position: arrowRightPos))
+        self.addChild(self.newObject(folder: "Arrows/", name: "arrowDown", position: arrowDownPos))
+        self.addChild(self.newObject(folder: "Arrows/", name: "arrowLeft", position: arrowLeftPos))
+        self.addChild(self.newObject(folder: "Arrows/", name: "arrowUp", position: arrowUpPos))
     }
     
     func loadGameMap () {
@@ -261,14 +261,6 @@ class GameScene: SKScene {
         player.zPosition = 2
         
         return player
-    }
-    
-    func createButton (imageNamed name: String, position: CGPoint) {
-        let button = SKSpriteNode(imageNamed: "Arrows/\(name)")
-        button.name = name
-        button.position = position
-        
-        self.addChild(button)
     }
     
     func createLabel (text: String, position: CGPoint) {
