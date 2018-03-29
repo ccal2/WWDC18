@@ -84,7 +84,7 @@ public class GameScene: SKScene {
             // verify where it's going
             let other_node = gameMap.atPoint(CGPoint(x: player.position.x + 2*x, y: player.position.y + 2*y))
             
-            if other_node.name != "tree" && other_node.name!.prefix(7) != "garbage" && other_node.name != "fullBin" && other_node.name!.prefix(3) != "bin" {
+            if other_node.name != "tree" && other_node.name!.prefix(7) != "garbage" && other_node.name!.prefix(3) != "bin" {
                 self.movement(object: node, x, y)
                 self.movement(object: player, x, y)
             }
@@ -99,11 +99,7 @@ public class GameScene: SKScene {
                     
                     // delay
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        // change the color of the bin
-                        gameMap.addChild(self.newObject(folder: "Bins", name: "fullBin", position: other_node.position))
-                        
-                        // remove empty bin and garbage from parent
-                        other_node.removeFromParent()
+                        // remove the garbage
                         node.removeFromParent()
                         
                         self.emptyBins -= 1
@@ -112,7 +108,10 @@ public class GameScene: SKScene {
                             let wonScene = SKScene(fileNamed: "Scene")!
                             wonScene.backgroundColor = #colorLiteral(red: 0.5480121216, green: 0.3523743953, blue: 0.7093039155, alpha: 1)
                             
-                            self.view?.presentScene(wonScene)
+                            // delay
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                self.view?.presentScene(wonScene)
+                            }
                         }
                     }
                 }
@@ -132,7 +131,7 @@ public class GameScene: SKScene {
                 nearNodes.append(nearUp)
                 
                 for i in 0...(nearNodes.count-1) {
-                    if nearNodes[i].name == "tree" || nearNodes[i].name == "fullBin" {
+                    if nearNodes[i].name == "tree" {
                         pinned[i] = true
                     }
                 }
@@ -155,7 +154,7 @@ public class GameScene: SKScene {
                 }
             }
             
-        } else if node.name != "tree" && node.name != "bin" && node.name != "fullBin" {
+        } else if node.name!.prefix(4) != "tree" && node.name!.prefix(3) != "bin" {
             self.movement(object: player, x, y)
         }
     }
