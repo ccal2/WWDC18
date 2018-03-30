@@ -6,21 +6,33 @@ public class TutorialScene: SKScene {
     }
     
     func loadButton () {
+        let homeButton = createObject(name: "button", nodeName: "Home", position: firstButtonPos)
         
+        self.addChild(homeButton)
+        
+        homeButton.addChild(createLabel(text: "Home", position: CGPoint(x: 0, y: -10)))
     }
     
     func touchButton (atPoint pos: CGPoint) {
         let button = self.atPoint(pos)
         
-        if button.name == "" {
+        if button.name == "Home" {
+            self.addChild(createObject(name: "button_h", position: firstButtonPos))
             
+            let scene = InitialScene(fileNamed: "Scene")!
+            scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
+            scene.scaleMode = .aspectFill
+            
+            let transition = SKTransition.fade(with: #colorLiteral(red: 0.645771694, green: 0.2032078091, blue: 0.3298983863, alpha: 1), duration: 1)
+            
+            self.view?.presentScene(scene, transition: transition)
         }
     }
     
     func Highlight (atPoint pos: CGPoint) {
-        let button = self.atPoint(startButtonPos)
+        let button = self.atPoint(pos)
         
-        if button.name == "_h" {
+        if button.name == "button_h" {
             button.removeFromParent()
         }
     }
@@ -37,3 +49,4 @@ public class TutorialScene: SKScene {
         }
     }
 }
+

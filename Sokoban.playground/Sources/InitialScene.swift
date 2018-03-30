@@ -7,8 +7,14 @@ public class InitialScene: SKScene {
     }
     
     func loadButtons () {
-        self.addChild(createLabel(text: "Play", position: startButtonPos))
-        self.addChild(createLabel(text: "Tutorial", position: tutorialButtonPos))
+        let playButton = createObject(name: "button", nodeName: "Play", position: firstButtonPos)
+        let tutorialButton = createObject(name: "button", nodeName: "Tutorial", position: secondButtonPos)
+        
+        self.addChild(playButton)
+        self.addChild(tutorialButton)
+        
+        playButton.addChild(createLabel(text: "Play", position: CGPoint(x: 0, y: -10)))
+        tutorialButton.addChild(createLabel(text: "Tutorial", position: CGPoint(x: 0, y: -10)))
     }
     
     func showAnimation () {
@@ -38,7 +44,19 @@ public class InitialScene: SKScene {
         let button = self.atPoint(pos)
         
         if button.name == "Play" {
+            self.addChild(createObject(name: "button_h", position: firstButtonPos))
+            
             let scene = GameScene(fileNamed: "Scene")!
+            scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
+            scene.scaleMode = .aspectFill
+            
+            let transition = SKTransition.fade(with: #colorLiteral(red: 0.645771694, green: 0.2032078091, blue: 0.3298983863, alpha: 1), duration: 1)
+            
+            self.view?.presentScene(scene, transition: transition)
+        } else if button.name == "Tutorial" {
+            self.addChild(createObject(name: "button_h", position: secondButtonPos))
+            
+            let scene = TutorialScene(fileNamed: "Scene")!
             scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
             scene.scaleMode = .aspectFill
             
@@ -49,9 +67,9 @@ public class InitialScene: SKScene {
     }
     
     func Highlight (atPoint pos: CGPoint) {
-        let button = self.atPoint(startButtonPos)
+        let button = self.atPoint(pos)
         
-        if button.name == "temp_h" {
+        if button.name == "button_h" {
             button.removeFromParent()
         }
     }

@@ -3,9 +3,8 @@ import SpriteKit
 // screen size = 1024 x 768
 
 // position of the buttons
-let startButtonPos = CGPoint(x: 0, y: -96)
-let tutorialButtonPos = CGPoint(x: 0, y: -224)
-let restartButtonPos = CGPoint(x: 0, y: -96)
+let firstButtonPos = CGPoint(x: 0, y: -96)
+let secondButtonPos = CGPoint(x: 0, y: -224)
 
 let arrowRightPos = CGPoint(x: 416, y: -160)
 let arrowDownPos = CGPoint(x: 352, y: -224)
@@ -25,10 +24,16 @@ func createLabel (text: String, position: CGPoint, size: CGFloat = 18, alignment
     return label
 }
 
-func createObject (folder: String = "", name: String, position: CGPoint) -> SKSpriteNode {
+func createObject (folder: String = "", name: String, nodeName: String = "", position: CGPoint) -> SKSpriteNode {
     let object = SKSpriteNode(imageNamed: "\(folder)\(name)")
     object.position = position
-    object.name = name
+    
+    if nodeName == ""{
+        object.name = name
+    } else {
+        object.name = nodeName
+    }
+    
     
     return object
 }
@@ -41,3 +46,4 @@ func createPlayer (imageNamed name: String, position: CGPoint) -> SKSpriteNode {
     
     return player
 }
+
