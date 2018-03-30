@@ -1,4 +1,3 @@
-import PlaygroundSupport
 import SpriteKit
 
 class WinScene: SKScene {
