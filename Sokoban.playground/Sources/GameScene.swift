@@ -199,38 +199,38 @@ class GameScene: SKScene {
         // trees
         for i in 0...(Int(columns)-1) {
             let j = CGFloat(i)
-            gameMap.addChild(self.createObject(name: "tree", position: matrix(x: j, y: 0, xRange, yRange)))
-            gameMap.addChild(self.createObject(name: "tree", position: matrix(x: j, y: lines-1, xRange, yRange)))
+            gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: j, y: 0, xRange, yRange)))
+            gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: j, y: lines-1, xRange, yRange)))
         }
         
         for i in 1...(Int(lines)-2) {
             let j = CGFloat(i)
-            gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 0, y: j, xRange, yRange)))
-            gameMap.addChild(self.createObject(name: "tree", position: matrix(x: columns-1, y: j, xRange, yRange)))
+            gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: 0, y: j, xRange, yRange)))
+            gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: columns-1, y: j, xRange, yRange)))
         }
         
-        gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 8, y: 6, xRange, yRange)))
-        gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 1, y: 5, xRange, yRange)))
-        gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 2, y: 5, xRange, yRange)))
-        gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 4, y: 5, xRange, yRange)))
-        gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 5, y: 5, xRange, yRange)))
-        gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 8, y: 4, xRange, yRange)))
-        gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 1, y: 3, xRange, yRange)))
-        gameMap.addChild(self.createObject(name: "tree", position: matrix(x: 5, y: 1, xRange, yRange)))
+        gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: 8, y: 6, xRange, yRange)))
+        gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: 1, y: 5, xRange, yRange)))
+        gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: 2, y: 5, xRange, yRange)))
+        gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: 4, y: 5, xRange, yRange)))
+        gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: 5, y: 5, xRange, yRange)))
+        gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: 8, y: 4, xRange, yRange)))
+        gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: 1, y: 3, xRange, yRange)))
+        gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: 5, y: 1, xRange, yRange)))
         
         // garbages
-//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageGreen", position: matrix(x: 7, y: 5, xRange, yRange)))
-//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageRed", position: matrix(x: 3, y: 5, xRange, yRange)))
-        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageBlue", position: matrix(x: 6, y: 3, xRange, yRange)))
-//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageBlue", position: matrix(x: 7, y: 2, xRange, yRange)))
-//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageYellow", position: matrix(x: 4, y: 2, xRange, yRange)))
+//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageGreen", position: self.matrix(x: 7, y: 5, xRange, yRange)))
+//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageRed", position: self.matrix(x: 3, y: 5, xRange, yRange)))
+        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageBlue", position: self.matrix(x: 6, y: 3, xRange, yRange)))
+//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageBlue", position: self.matrix(x: 7, y: 2, xRange, yRange)))
+//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageYellow", position: self.matrix(x: 4, y: 2, xRange, yRange)))
         self.garbageOutCount = self.garbageCount
         
         // bins
-        gameMap.addChild(self.createObject(folder: "Bins/", name: "binBlue", position: matrix(x: 6, y: 2, xRange, yRange)))
-        gameMap.addChild(self.createObject(folder: "Bins/", name: "binGreen", position: matrix(x: 1, y: 1, xRange, yRange)))
-        gameMap.addChild(self.createObject(folder: "Bins/", name: "binRed", position: matrix(x: 3, y: 6, xRange, yRange)))
-        gameMap.addChild(self.createObject(folder: "Bins/", name: "binYellow", position: matrix(x: 8, y: 5, xRange, yRange)))
+        gameMap.addChild(self.createObject(folder: "Bins/", name: "binBlue", position: self.matrix(x: 6, y: 2, xRange, yRange)))
+        gameMap.addChild(self.createObject(folder: "Bins/", name: "binGreen", position: self.matrix(x: 1, y: 1, xRange, yRange)))
+        gameMap.addChild(self.createObject(folder: "Bins/", name: "binRed", position: self.matrix(x: 3, y: 6, xRange, yRange)))
+        gameMap.addChild(self.createObject(folder: "Bins/", name: "binYellow", position: self.matrix(x: 8, y: 5, xRange, yRange)))
         
         // player
         let player = createPlayer(imageNamed: "playerFront", position: CGPoint(x: xMiddle, y: yMiddle))
@@ -257,9 +257,9 @@ class GameScene: SKScene {
         
         return object
     }
-}
-
-// convert position
-func matrix (x posX: CGFloat, y posY: CGFloat, _ xRange: SKRange, _ yRange: SKRange) -> CGPoint {
-    return CGPoint(x: xRange.lowerLimit + posX*tileSize, y: yRange.lowerLimit + (lines-1 - posY)*tileSize)
+    
+    // convert position
+    func matrix (x posX: CGFloat, y posY: CGFloat, _ xRange: SKRange, _ yRange: SKRange) -> CGPoint {
+        return CGPoint(x: xRange.lowerLimit + posX*tileSize, y: yRange.lowerLimit + (lines-1 - posY)*tileSize)
+    }
 }

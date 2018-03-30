@@ -20,6 +20,7 @@ func createLabel (text: String, position: CGPoint, size: CGFloat = 18, alignment
     label.fontSize = size
     label.position = position
     label.horizontalAlignmentMode = alignment
+    label.zPosition = 1
     
     return label
 }
@@ -34,6 +35,11 @@ func createObject (folder: String = "", name: String, nodeName: String = "", pos
         object.name = nodeName
     }
     
+    if name.prefix(7) == "garbage" {
+        object.zPosition = 1
+    } else {
+        object.zPosition = 0
+    }
     
     return object
 }
