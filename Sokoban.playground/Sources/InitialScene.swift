@@ -18,9 +18,17 @@ public class InitialScene: SKScene {
     }
     
     func showAnimation () {
+//        // add player
+//        let player = createPlayer(imageNamed: "playerFront", position: CGPoint(x: -160, y: 160))
+//        self.addChild(player)
+        
         // add player
-        let player = createPlayer(imageNamed: "playerFront", position: CGPoint(x: -160, y: 160))
-        self.addChild(player)
+        let playerFront = createObject(folder: "Player/", name: "playerFront", position: CGPoint(x: -160, y: 160))
+        self.addChild(playerFront)
+        
+        let playerRight = createObject(folder: "Player/", name: "playerRight", position: CGPoint(x: -160, y: 160))
+        playerRight.isHidden = true
+        self.addChild(playerRight)
         
         // add garbage
         let garbage = createObject(folder: "Garbages/", name: "garbageBlue", position: CGPoint(x: -32, y: 160))
@@ -30,14 +38,25 @@ public class InitialScene: SKScene {
         // add bin
         self.addChild(createObject(folder: "Bins/", name: "binBlue", position: CGPoint(x: 160, y: 160)))
         
-        let actionPlayer = SKAction.sequence([SKAction.moveBy(x: 256, y: 0, duration: 3), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.moveBy(x: -256, y: 0, duration: 0), SKAction.moveBy(x: 0, y: 0, duration: 1)])
-        let actionBargage = SKAction.sequence([SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.moveBy(x: 192, y: 0, duration: 2), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.unhide(), SKAction.moveBy(x: -192, y: 0, duration: 0), SKAction.moveBy(x: 0, y: 0, duration: 1)])
+//        // animation
+//        let actionPlayer = SKAction.sequence([SKAction.moveBy(x: 256, y: 0, duration: 3), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.moveBy(x: -256, y: 0, duration: 0), SKAction.moveBy(x: 0, y: 0, duration: 1)])
+//        let actionBargage = SKAction.sequence([SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.moveBy(x: 192, y: 0, duration: 2), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.unhide(), SKAction.moveBy(x: -192, y: 0, duration: 0), SKAction.moveBy(x: 0, y: 0, duration: 1)])
+//
+//        let repeatActionPlayer = SKAction.repeatForever(actionPlayer)
+//        let repeatActionGarbage = SKAction.repeatForever(actionBargage)
         
-        let repeatActionPlayer = SKAction.repeatForever(actionPlayer)
-        let repeatActionGarbage = SKAction.repeatForever(actionBargage)
+//        player.run(repeatActionPlayer)
+//        garbage.run(repeatActionGarbage)
         
-        player.run(repeatActionPlayer)
-        garbage.run(repeatActionGarbage)
+        
+        // animation
+        let actionPlayerFront = SKAction.sequence([SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 5.5), SKAction.unhide()])
+        let actionPlayerRight = SKAction.sequence([SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.unhide(), SKAction.moveBy(x: tileSize*4, y: 0, duration: 4), SKAction.moveBy(x: 0, y: 0, duration: 1.5), SKAction.hide(), SKAction.moveBy(x: -tileSize*4, y: 0, duration: 0)])
+        let actionGarbage = SKAction.sequence([SKAction.moveBy(x: 0, y: 0, duration: 2), SKAction.moveBy(x: tileSize*3, y: 0, duration: 3), SKAction.moveBy(x: 0, y: 0, duration: 0.5), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.moveBy(x: -tileSize*3, y: 0, duration: 0), SKAction.unhide()])
+        
+        playerFront.run(SKAction.repeatForever(actionPlayerFront))
+        playerRight.run(SKAction.repeatForever(actionPlayerRight))
+        garbage.run(SKAction.repeatForever(actionGarbage))
     }
     
     func touchButton (atPoint pos: CGPoint) {

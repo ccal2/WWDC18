@@ -22,27 +22,96 @@ class TutorialScene: SKScene {
         let xRange = SKRange(lowerLimit: (tileSize - width)/2, upperLimit: (width - tileSize)/2)
         let yRange = SKRange(lowerLimit: (tileSize - height)/2, upperLimit: (height - tileSize)/2)
         
-        // add player
-        let playerFront = createObject(folder: "Player/", name: "playerFront", position: self.matrix(x: 2, y: 3, xRange, yRange))
-        playerFront.constraints = [SKConstraint.positionX(xRange, y: yRange)]
-        gameMap.addChild(playerFront)
+        // add players
+            // front
+            let playerFront = createObject(folder: "Player/", name: "playerFront", position: self.matrix(x: 2, y: 3, xRange, yRange))
+            gameMap.addChild(playerFront)
+            // right
+            let playerRight = createObject(folder: "Player/", name: "playerRight", position: self.matrix(x: 2, y: 3, xRange, yRange))
+            playerRight.isHidden = true
+            gameMap.addChild(playerRight)
+            // back
+            let playerBack = createObject(folder: "Player/", name: "playerBack", position: self.matrix(x: 3, y: 3, xRange, yRange))
+            playerBack.isHidden = true
+            gameMap.addChild(playerBack)
+            // left
+            let playerLeft = createObject(folder: "Player/", name: "playerLeft", position: self.matrix(x: 3, y: 3, xRange, yRange))
+            playerLeft.isHidden = true
+            gameMap.addChild(playerLeft)
         
-        let playerRight = createObject(folder: "Player/", name: "playerRight", position: self.matrix(x: 2, y: 3, xRange, yRange))
-        playerRight.constraints = [SKConstraint.positionX(xRange, y: yRange)]
-        playerRight.isHidden = true
-        gameMap.addChild(playerRight)
+        // add garbages
+        let garbageBlue = createObject(folder: "Garbages/", name: "garbageBlue", position: self.matrix(x: 4, y: 3, xRange, yRange))
+        gameMap.addChild(garbageBlue)
+        let garbageYellow = createObject(folder: "Garbages/", name: "garbageYellow", position: self.matrix(x: 4, y: 3, xRange, yRange))
+        garbageYellow.isHidden = true
+        gameMap.addChild(garbageYellow)
         
-        // get garbage
-        let garbage = gameMap.childNode(withName: "garbageBlue")!
+        // animations
+        // 0 - move the garbage to the bin
+            // instruction
+                // text
         
-        // animation
-        let actionPlayerFront = SKAction.sequence([SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 4.5), SKAction.unhide()])
-        let actionPlayerRight = SKAction.sequence([SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.unhide(), SKAction.moveBy(x: tileSize*3, y: 0, duration: 3), SKAction.moveBy(x: 0, y: 0, duration: 1.5), SKAction.hide(), SKAction.moveBy(x: -tileSize*3, y: 0, duration: 0)])
-        let actionGarbage = SKAction.sequence([SKAction.moveBy(x: 0, y: 0, duration: 2), SKAction.moveBy(x: tileSize*2, y: 0, duration: 2), SKAction.moveBy(x: 0, y: 0, duration: 0.5), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.moveBy(x: -tileSize*2, y: 0, duration: 0), SKAction.unhide()])
+            // actions
+                //      > > > >
+            let actionPlayerFront0 = SKAction.sequence([SKAction.unhide(), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 4.5)])
+            let actionPlayerRight0 = SKAction.sequence([SKAction.hide(), SKAction.move(to: self.matrix(x: 2, y: 3, xRange, yRange), duration: 0), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.unhide(), SKAction.moveBy(x: tileSize*3, y: 0, duration: 3), SKAction.moveBy(x: 0, y: 0, duration: 1.5), SKAction.hide()])
+            let actionPlayerBack0 = SKAction.sequence([SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 5.5)])
+            let actionPlayerLeft0 = SKAction.sequence([SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 5.5)])
+            let actionGarbageBlue0 = SKAction.sequence([SKAction.unhide(), SKAction.move(to: self.matrix(x: 4, y: 3, xRange, yRange), duration: 0), SKAction.moveBy(x: 0, y: 0, duration: 2), SKAction.moveBy(x: tileSize*2, y: 0, duration: 2), SKAction.moveBy(x: 0, y: 0, duration: 0.5), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 1)])
+            let actionGarbageYellow0 = SKAction.sequence([SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 5.5)])
         
-        playerFront.run(SKAction.repeatForever(actionPlayerFront))
-        playerRight.run(SKAction.repeatForever(actionPlayerRight))
-        garbage.run(SKAction.repeatForever(actionGarbage))
+        // 1.1 - be sure to move it to the right bin
+            // instruction
+                // text
+        
+            // actions
+                //      > V > ^ < ^ > > .
+            let actionPlayerFront11 = SKAction.sequence([SKAction.move(to: self.matrix(x: 2, y: 3, xRange, yRange), duration: 0), SKAction.unhide(), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.unhide(), SKAction.moveBy(x: 0, y: 0, duration: 0), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 6.5)])
+            let actionPlayerRight11 = SKAction.sequence([SKAction.hide(), SKAction.move(to: self.matrix(x: 2, y: 3, xRange, yRange), duration: 0), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.unhide(), SKAction.moveBy(x: tileSize, y: 0, duration: 1), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 1.5), SKAction.hide()])
+            let actionPlayerBack11 = SKAction.sequence([SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 2), SKAction.unhide(), SKAction.moveBy(x: 0, y: -tileSize, duration: 1), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.hide(), SKAction.unhide(), SKAction.moveBy(x: 0, y: 0, duration: 0)])
+            let actionPlayerLeft11 = SKAction.sequence([SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 7.5)])
+            let actionGarbageBlue11 = SKAction.sequence([SKAction.move(to: self.matrix(x: 4, y: 3, xRange, yRange), duration: 0), SKAction.unhide(), SKAction.moveBy(x: 0, y: 0, duration:  2), SKAction.moveBy(x: tileSize*2, y: 0, duration: 2), SKAction.moveBy(x: 0, y: 0, duration: 0.5), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 1)])
+            let actionGarbageYellow11 = SKAction.sequence([SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 7.5)])
+        
+        // 1.2 - be sure to move it to the right bin
+            // instruction
+                // text
+        
+            // actions
+            let actionPlayerFront12 = SKAction.sequence([SKAction.unhide(), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 4.5)])
+            let actionPlayerRight12 = SKAction.sequence([SKAction.hide(), SKAction.move(to: self.matrix(x: 2, y: 3, xRange, yRange), duration: 0), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.unhide(), SKAction.moveBy(x: tileSize*3, y: 0, duration: 3), SKAction.moveBy(x: 0, y: 0, duration: 1.5), SKAction.hide()])
+            let actionPlayerBack12 = SKAction.sequence([SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 5.5)])
+            let actionPlayerLeft12 = SKAction.sequence([SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 5.5)])
+            let actionGarbageBlue12 = SKAction.sequence([SKAction.move(to: self.matrix(x: 4, y: 3, xRange, yRange), duration: 0), SKAction.unhide(), SKAction.moveBy(x: 0, y: 0, duration: 2), SKAction.moveBy(x: tileSize*2, y: 0, duration: 2), SKAction.moveBy(x: 0, y: 0, duration: 0.5), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 1)])
+            let actionGarbageYellow12 = SKAction.sequence([SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 5.5)])
+        
+        // 2 - don't get trapped
+            // instruction
+                // text
+        
+            // actions
+            let actionPlayerFront2 = SKAction.sequence([SKAction.unhide(), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 4.5)])
+            let actionPlayerRight2 = SKAction.sequence([SKAction.hide(), SKAction.move(to: self.matrix(x: 2, y: 3, xRange, yRange), duration: 0), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.unhide(), SKAction.moveBy(x: tileSize*3, y: 0, duration: 3), SKAction.moveBy(x: 0, y: 0, duration: 1.5)])
+            let actionPlayerBack2 = SKAction.sequence([SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 5.5)])
+            let actionPlayerLeft2 = SKAction.sequence([SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 5.5)])
+            let actionGarbageBlue2 = SKAction.sequence([SKAction.unhide(), SKAction.move(to: self.matrix(x: 4, y: 3, xRange, yRange), duration: 0), SKAction.moveBy(x: 0, y: 0, duration: 2), SKAction.moveBy(x: tileSize*2, y: 0, duration: 2), SKAction.moveBy(x: 0, y: 0, duration: 0.5), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 1)])
+            let actionGarbageYellow2 = SKAction.sequence([SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 5.5)])
+        
+        // put it together
+        let actionPlayerFront = SKAction.sequence([actionPlayerFront0, actionPlayerFront11, actionPlayerFront12, actionPlayerFront2])
+        let actionPlayerRight = SKAction.sequence([actionPlayerRight0, actionPlayerRight11, actionPlayerRight12, actionPlayerRight2])
+        let actionPlayerBack = SKAction.sequence([actionPlayerBack0, actionPlayerBack11, actionPlayerBack12, actionPlayerBack2])
+        let actionPlayerLeft = SKAction.sequence([actionPlayerLeft0, actionPlayerLeft11, actionPlayerLeft12, actionPlayerLeft2])
+        let actionGarbageBlue = SKAction.sequence([actionGarbageBlue0, actionGarbageBlue11, actionGarbageBlue12, actionGarbageBlue2])
+        let actionGarbageYellow = SKAction.sequence([actionGarbageYellow0, actionGarbageYellow11, actionGarbageYellow12, actionGarbageYellow2])
+        
+        // run actions
+        playerFront.run(actionPlayerFront)
+        playerRight.run(actionPlayerRight)
+        playerBack.run(actionPlayerBack)
+        playerLeft.run(actionPlayerLeft)
+        garbageBlue.run(actionGarbageBlue)
+        garbageYellow.run(actionGarbageYellow)
     }
     
     func touchButton (atPoint pos: CGPoint) {
@@ -122,10 +191,6 @@ class TutorialScene: SKScene {
         gameMap.addChild(createObject(name: "tree", position: self.matrix(x: 8, y: 4, xRange, yRange)))
         gameMap.addChild(createObject(name: "tree", position: self.matrix(x: 1, y: 3, xRange, yRange)))
         gameMap.addChild(createObject(name: "tree", position: self.matrix(x: 5, y: 1, xRange, yRange)))
-        
-        // garbages
-        gameMap.addChild(createObject(folder: "Garbages/", name: "garbageBlue", position: self.matrix(x: 4, y: 3, xRange, yRange)))
-        
         
         // bins
         gameMap.addChild(createObject(folder: "Bins/", name: "binBlue", position: self.matrix(x: 6, y: 3, xRange, yRange)))
