@@ -18,10 +18,6 @@ public class InitialScene: SKScene {
     }
     
     func showAnimation () {
-//        // add player
-//        let player = createPlayer(imageNamed: "playerFront", position: CGPoint(x: -160, y: 160))
-//        self.addChild(player)
-        
         // add player
         let playerFront = createObject(folder: "Player/", name: "playerFront", position: CGPoint(x: -160, y: 160))
         self.addChild(playerFront)
@@ -55,8 +51,9 @@ public class InitialScene: SKScene {
         if button.name == "Play" {
             self.addChild(createObject(name: "button_h", position: firstButtonPos))
             
-            let scene = GameScene(fileNamed: "Scene")!
+            let scene = GameScene(size: sceneSize)
             scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
+            scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
             scene.scaleMode = .aspectFill
             
             let transition = SKTransition.fade(with: #colorLiteral(red: 0.645771694, green: 0.2032078091, blue: 0.3298983863, alpha: 1), duration: 1)
@@ -65,8 +62,9 @@ public class InitialScene: SKScene {
         } else if button.name == "Tutorial" {
             self.addChild(createObject(name: "button_h", position: secondButtonPos))
             
-            let scene = TutorialScene(fileNamed: "Scene")!
+            let scene = TutorialScene(size: sceneSize)
             scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
+            scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
             scene.scaleMode = .aspectFill
             
             let transition = SKTransition.fade(with: #colorLiteral(red: 0.645771694, green: 0.2032078091, blue: 0.3298983863, alpha: 1), duration: 1)

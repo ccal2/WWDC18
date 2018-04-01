@@ -1,11 +1,5 @@
 import SpriteKit
 
-// game constants
-let tileSize: CGFloat = 64
-let columns: CGFloat = 10
-let lines: CGFloat = 8
-let frames: CGFloat = 4 // divisor 64
-
 class GameScene: SKScene {
     var garbageCount: Int = 0
     var garbageOutCount: Int = 0
@@ -44,18 +38,6 @@ class GameScene: SKScene {
         }
     }
     
-    public override func touchesBegan (_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches {
-            touchButton(atPoint: t.location(in: self))
-        }
-    }
-    
-    public override func touchesEnded (_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches {
-            Highlight(atPoint: t.location(in: self))
-        }
-    }
-    
     func move (_ direction: String, from position: CGPoint, x: CGFloat, y: CGFloat) {
         let gameMap = self.childNode(withName: "gameMap")!
         let oldPlayer = gameMap.childNode(withName: "player")!
@@ -87,67 +69,17 @@ class GameScene: SKScene {
                     self.movement(object: player, x, y)
                     
                     // delay
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                         // remove the garbage
                         node.removeFromParent()
                         
                         self.garbageOutCount -= 1
                         
-                        if self.garbageOutCount == 0 {
-                            let scene = WinScene(fileNamed: "Scene")!
-                            scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
-                            scene.scaleMode = .aspectFill
-                            
-                            let transition = SKTransition.fade(with: #colorLiteral(red: 0.645771694, green: 0.2032078091, blue: 0.3298983863, alpha: 1), duration: 1)
-                            
-                            self.view?.presentScene(scene, transition: transition)
-                        }
+                        self.checkIfWon()
                     }
                 }
             } else {
-                var lost = false
-                var nearNodes: [SKNode] = []
-                var pinned: [Bool] = [false, false, false, false] // 0 - right; 1 - down; 2 - left; 3 - up
-                
-                let nearRight = gameMap.atPoint(CGPoint(x: node.position.x + tileSize, y: node.position.y))
-                let nearDown = gameMap.atPoint(CGPoint(x: node.position.x, y: node.position.y - tileSize))
-                let nearLeft = gameMap.atPoint(CGPoint(x: node.position.x - tileSize, y: node.position.y))
-                let nearUp = gameMap.atPoint(CGPoint(x: node.position.x, y: node.position.y + tileSize))
-                
-                nearNodes.append(nearRight)
-                nearNodes.append(nearDown)
-                nearNodes.append(nearLeft)
-                nearNodes.append(nearUp)
-                
-                for i in 0...(nearNodes.count-1) {
-                    if nearNodes[i].name == "tree" {
-                        pinned[i] = true
-                    } else if nearNodes[i].name!.prefix(3) == "bin" {
-                        let indexBin = nearNodes[i].name!.index(other_node.name!.startIndex, offsetBy: 3)
-                        let colorBin = nearNodes[i].name![indexBin...]
-                        
-                        if colorBin != colorGarbage {
-                            pinned[i] = true
-                        }
-                    }
-                }
-                
-                for i in 0...3 {
-                    if pinned[i] && pinned[(i+1)%4] {
-                        lost = true
-                        break
-                    }
-                }
-                
-                if lost {
-                    let scene = LoseScene(fileNamed: "Scene")!
-                    scene.backgroundColor = #colorLiteral(red: 0.3287855243, green: 0.3323060302, blue: 0.3478847121, alpha: 1)
-                    scene.scaleMode = .aspectFill
-                    
-                    let transition = SKTransition.fade(with: #colorLiteral(red: 0.3287855243, green: 0.3323060302, blue: 0.3478847121, alpha: 1), duration: 1)
-                    
-                    self.view?.presentScene(scene, transition: transition)
-                }
+                self.checkIfLost(gameMap, node, other_node, String(colorGarbage))
             }
             
         } else if node.name!.prefix(4) != "tree" && node.name!.prefix(3) != "bin" {
@@ -158,6 +90,70 @@ class GameScene: SKScene {
     func movement (object: SKNode, _ x: CGFloat, _ y: CGFloat) {
         for _ in 1...Int(frames) {
             object.position = CGPoint(x: object.position.x + (x/frames), y: object.position.y + (y/frames))
+        }
+    }
+    
+    func checkIfWon () {
+        if self.garbageOutCount == 0 {
+            let labels = [createLabel(text: "Congratulations!", position: CGPoint(x: 0, y: 96), size: 24), createLabel(text: "You've cleaned the park!", position: CGPoint(x: 0, y: 160))]
+            
+            let scene = EndGameScene(size: sceneSize, labels: labels)
+            scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
+            scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+            scene.scaleMode = .aspectFill
+            
+            let transition = SKTransition.fade(with: #colorLiteral(red: 0.645771694, green: 0.2032078091, blue: 0.3298983863, alpha: 1), duration: 1)
+            
+            self.view?.presentScene(scene, transition: transition)
+        }
+    }
+    
+    func checkIfLost (_ gameMap: SKNode, _ node: SKNode, _ other_node: SKNode, _ colorGarbage: String) {
+        var lost = false
+        var nearNodes: [SKNode] = []
+        var pinned: [Bool] = [false, false, false, false] // 0 - right; 1 - down; 2 - left; 3 - up
+        
+        let nearRight = gameMap.atPoint(CGPoint(x: node.position.x + tileSize, y: node.position.y))
+        let nearDown = gameMap.atPoint(CGPoint(x: node.position.x, y: node.position.y - tileSize))
+        let nearLeft = gameMap.atPoint(CGPoint(x: node.position.x - tileSize, y: node.position.y))
+        let nearUp = gameMap.atPoint(CGPoint(x: node.position.x, y: node.position.y + tileSize))
+        
+        nearNodes.append(nearRight)
+        nearNodes.append(nearDown)
+        nearNodes.append(nearLeft)
+        nearNodes.append(nearUp)
+        
+        for i in 0...(nearNodes.count-1) {
+            if nearNodes[i].name == "tree" {
+                pinned[i] = true
+            } else if nearNodes[i].name!.prefix(3) == "bin" {
+                let indexBin = nearNodes[i].name!.index(other_node.name!.startIndex, offsetBy: 3)
+                let colorBin = nearNodes[i].name![indexBin...]
+                
+                if colorBin != colorGarbage {
+                    pinned[i] = true
+                }
+            }
+        }
+        
+        for i in 0...3 {
+            if pinned[i] && pinned[(i+1)%4] {
+                lost = true
+                break
+            }
+        }
+        
+        if lost {
+            let label = [createLabel(text: "Oh no! You've trapped the garbage", position: CGPoint(x: 0, y: 96), size: 24)]
+            
+            let scene = EndGameScene(size: sceneSize, labels: label)
+            scene.backgroundColor = #colorLiteral(red: 0.3287855243, green: 0.3323060302, blue: 0.3478847121, alpha: 1)
+            scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+            scene.scaleMode = .aspectFill
+            
+            let transition = SKTransition.fade(with: #colorLiteral(red: 0.3287855243, green: 0.3323060302, blue: 0.3478847121, alpha: 1), duration: 1)
+            
+            self.view?.presentScene(scene, transition: transition)
         }
     }
     
@@ -188,11 +184,7 @@ class GameScene: SKScene {
         gameMap.name = "gameMap"
         gameMap.position = CGPoint(x: -128, y: 0)
         
-        // gameMap limits and middle
-        let width = gameMap.frame.width - 10 // 10 -> grassMap margins
-        let height = gameMap.frame.height - 10
-        let xRange = SKRange(lowerLimit: (tileSize - width)/2, upperLimit: (width - tileSize)/2)
-        let yRange = SKRange(lowerLimit: (tileSize - height)/2, upperLimit: (height - tileSize)/2)
+        // middle position
         let xMiddle = xRange.lowerLimit + columns/2 * tileSize
         let yMiddle = yRange.lowerLimit + lines/2 * tileSize
         
@@ -213,17 +205,17 @@ class GameScene: SKScene {
         gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: 1, y: 5, xRange, yRange)))
         gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: 2, y: 5, xRange, yRange)))
         gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: 4, y: 5, xRange, yRange)))
-        gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: 5, y: 5, xRange, yRange)))
         gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: 8, y: 4, xRange, yRange)))
         gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: 1, y: 3, xRange, yRange)))
         gameMap.addChild(self.createObject(name: "tree", position: self.matrix(x: 5, y: 1, xRange, yRange)))
         
         // garbages
-//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageGreen", position: self.matrix(x: 7, y: 5, xRange, yRange)))
-//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageRed", position: self.matrix(x: 3, y: 5, xRange, yRange)))
-        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageBlue", position: self.matrix(x: 6, y: 3, xRange, yRange)))
-//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageBlue", position: self.matrix(x: 7, y: 2, xRange, yRange)))
-//        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageYellow", position: self.matrix(x: 4, y: 2, xRange, yRange)))
+        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageGreen", position: self.matrix(x: 7, y: 5, xRange, yRange)))
+        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageRed", position: self.matrix(x: 3, y: 5, xRange, yRange)))
+        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageRed", position: self.matrix(x: 6, y: 3, xRange, yRange)))
+        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageBlue", position: self.matrix(x: 5, y: 5, xRange, yRange)))
+        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageBlue", position: self.matrix(x: 7, y: 2, xRange, yRange)))
+        gameMap.addChild(self.createObject(folder: "Garbages/", name: "garbageYellow", position: self.matrix(x: 4, y: 2, xRange, yRange)))
         self.garbageOutCount = self.garbageCount
         
         // bins
@@ -261,5 +253,17 @@ class GameScene: SKScene {
     // convert position
     func matrix (x posX: CGFloat, y posY: CGFloat, _ xRange: SKRange, _ yRange: SKRange) -> CGPoint {
         return CGPoint(x: xRange.lowerLimit + posX*tileSize, y: yRange.lowerLimit + (lines-1 - posY)*tileSize)
+    }
+    
+    public override func touchesBegan (_ touches: Set<UITouch>, with event: UIEvent?) {
+        for t in touches {
+            touchButton(atPoint: t.location(in: self))
+        }
+    }
+    
+    public override func touchesEnded (_ touches: Set<UITouch>, with event: UIEvent?) {
+        for t in touches {
+            Highlight(atPoint: t.location(in: self))
+        }
     }
 }

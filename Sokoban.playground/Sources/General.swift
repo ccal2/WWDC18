@@ -5,11 +5,21 @@ import SpriteKit
 // position of the buttons
 let firstButtonPos = CGPoint(x: 0, y: -96)
 let secondButtonPos = CGPoint(x: 0, y: -224)
-
 let arrowRightPos = CGPoint(x: 416, y: -160)
 let arrowDownPos = CGPoint(x: 352, y: -224)
 let arrowLeftPos = CGPoint(x: 288, y: -160)
 let arrowUpPos = CGPoint(x: 352, y: -96)
+
+// constants
+let sceneSize = CGSize(width: 1024, height: 768)
+let tileSize: CGFloat = 64
+let columns: CGFloat = 10
+let lines: CGFloat = 8
+let frames: CGFloat = 4 // divisor 64
+let width: CGFloat = 640
+let height: CGFloat = 510
+let xRange = SKRange(lowerLimit: (tileSize - width)/2, upperLimit: (width - tileSize)/2)
+let yRange = SKRange(lowerLimit: (tileSize - height)/2, upperLimit: (height - tileSize)/2)
 
 // functions
 

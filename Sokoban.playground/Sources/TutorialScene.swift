@@ -7,16 +7,12 @@ let instructionBlockPos = CGPoint(x: 352, y: 133)
 
 // constants
 let numberOfSteps = 2
-let width: CGFloat = 640
-let height: CGFloat = 510
-let xRange = SKRange(lowerLimit: (tileSize - width)/2, upperLimit: (width - tileSize)/2)
-let yRange = SKRange(lowerLimit: (tileSize - height)/2, upperLimit: (height - tileSize)/2)
 
 // instructions
-let instruction0 = createLabel(text: "Move the garbage to the bin", position: CGPoint.zero, name: "instruction0", maxWidth: 192)
-let instruction1 = createLabel(text: "Be sure to move it to the right one", position: CGPoint.zero, name: "instruction1", maxWidth: 192)
-let instruction2 = createLabel(text: "Be sure to move it to the right one", position: CGPoint.zero, name: "instruction2", maxWidth: 192)
-let instruction3 = createLabel(text: "Be carefull not to trap your garbage", position: CGPoint.zero, name: "instruction3", maxWidth: 192)
+let instruction0 = createLabel(text: "Move the garbages to the bins", position: CGPoint.zero, name: "instruction0", maxWidth: 192)
+let instruction1 = createLabel(text: "You can't move a garbage of a type to a bin of a different type!", position: CGPoint.zero, name: "instruction1", maxWidth: 192)
+let instruction2 = createLabel(text: "So be sure to move it to the right bin", position: CGPoint.zero, name: "instruction2", maxWidth: 192)
+let instruction3 = createLabel(text: "Be carefull not to trap your garbage!", position: CGPoint.zero, name: "instruction3", maxWidth: 192)
 let instructions: [SKLabelNode] = [instruction0, instruction1, instruction2, instruction3]
 
 class TutorialScene: SKScene {
@@ -32,13 +28,13 @@ class TutorialScene: SKScene {
     func instructionsAnimation (_ number: Int) {
         let gameMap = self.childNode(withName: "gameMap")!
         
-        // add players
+        // get players
         let playerFront = gameMap.childNode(withName: "playerFront")!
         let playerRight = gameMap.childNode(withName: "playerRight")!
         let playerBack = gameMap.childNode(withName: "playerBack")!
         let playerLeft = gameMap.childNode(withName: "playerLeft")!
         
-        // add garbages
+        // get garbages
         let garbageBlue = gameMap.childNode(withName: "garbageBlue")!
         let garbageYellow = gameMap.childNode(withName: "garbageYellow")!
         
@@ -191,8 +187,9 @@ class TutorialScene: SKScene {
         if button.name == "Home" {
             self.addChild(createObject(name: "button_h", position: homeButtonPos))
             
-            let scene = InitialScene(fileNamed: "Scene")!
+            let scene = InitialScene(size: sceneSize)
             scene.backgroundColor = #colorLiteral(red: 0.7093039155, green: 0.2193932235, blue: 0.3572371602, alpha: 1)
+            scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
             scene.scaleMode = .aspectFill
             
             let transition = SKTransition.fade(with: #colorLiteral(red: 0.645771694, green: 0.2032078091, blue: 0.3298983863, alpha: 1), duration: 1)
@@ -254,7 +251,6 @@ class TutorialScene: SKScene {
         gameMap.addChild(createObject(name: "tree", position: self.matrix(x: 1, y: 5, xRange, yRange)))
         gameMap.addChild(createObject(name: "tree", position: self.matrix(x: 2, y: 5, xRange, yRange)))
         gameMap.addChild(createObject(name: "tree", position: self.matrix(x: 4, y: 5, xRange, yRange)))
-        gameMap.addChild(createObject(name: "tree", position: self.matrix(x: 5, y: 5, xRange, yRange)))
         gameMap.addChild(createObject(name: "tree", position: self.matrix(x: 8, y: 4, xRange, yRange)))
         gameMap.addChild(createObject(name: "tree", position: self.matrix(x: 1, y: 3, xRange, yRange)))
         gameMap.addChild(createObject(name: "tree", position: self.matrix(x: 5, y: 1, xRange, yRange)))
