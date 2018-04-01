@@ -53,3 +53,22 @@ func createPlayer (imageNamed name: String, position: CGPoint) -> SKSpriteNode {
     return player
 }
 
+func wait (_ seconds: Double) -> SKAction {
+    return SKAction.moveBy(x: 0, y: 0, duration: seconds)
+}
+
+func moveRight (_ times: CGFloat) -> SKAction {
+    return SKAction.moveBy(x: times*tileSize, y: 0, duration: TimeInterval(times))
+}
+
+func moveDown (_ times: CGFloat) -> SKAction {
+    return SKAction.moveBy(x: 0, y: -times*tileSize, duration: TimeInterval(times))
+}
+
+func moveLeft (_ times: CGFloat) -> SKAction {
+    return SKAction.moveBy(x: -times*tileSize, y: 0, duration: TimeInterval(times))
+}
+
+func moveUp (_ times: CGFloat) -> SKAction {
+    return SKAction.moveBy(x: 0, y: times*tileSize, duration: TimeInterval(times))
+}

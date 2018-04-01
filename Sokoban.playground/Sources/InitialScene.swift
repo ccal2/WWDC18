@@ -38,22 +38,12 @@ public class InitialScene: SKScene {
         // add bin
         self.addChild(createObject(folder: "Bins/", name: "binBlue", position: CGPoint(x: 160, y: 160)))
         
-//        // animation
-//        let actionPlayer = SKAction.sequence([SKAction.moveBy(x: 256, y: 0, duration: 3), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.moveBy(x: -256, y: 0, duration: 0), SKAction.moveBy(x: 0, y: 0, duration: 1)])
-//        let actionBargage = SKAction.sequence([SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.moveBy(x: 192, y: 0, duration: 2), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.unhide(), SKAction.moveBy(x: -192, y: 0, duration: 0), SKAction.moveBy(x: 0, y: 0, duration: 1)])
-//
-//        let repeatActionPlayer = SKAction.repeatForever(actionPlayer)
-//        let repeatActionGarbage = SKAction.repeatForever(actionBargage)
+        // actions
+        let actionPlayerFront = SKAction.sequence([SKAction.move(to: CGPoint(x: -160, y: 160), duration: 0), SKAction.unhide(), wait(1), SKAction.hide(), wait(5.5)])
+        let actionPlayerRight = SKAction.sequence([SKAction.move(to: CGPoint(x: -160, y: 160), duration: 0), wait(1), SKAction.unhide(), moveRight(4), wait(1.5), SKAction.hide()])
+        let actionGarbage = SKAction.sequence([SKAction.move(to: CGPoint(x: -32, y: 160), duration: 0), SKAction.unhide(), wait(2), moveRight(3), wait(0.5), SKAction.hide(), wait(1)])
         
-//        player.run(repeatActionPlayer)
-//        garbage.run(repeatActionGarbage)
-        
-        
-        // animation
-        let actionPlayerFront = SKAction.sequence([SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 5.5), SKAction.unhide()])
-        let actionPlayerRight = SKAction.sequence([SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.unhide(), SKAction.moveBy(x: tileSize*4, y: 0, duration: 4), SKAction.moveBy(x: 0, y: 0, duration: 1.5), SKAction.hide(), SKAction.moveBy(x: -tileSize*4, y: 0, duration: 0)])
-        let actionGarbage = SKAction.sequence([SKAction.moveBy(x: 0, y: 0, duration: 2), SKAction.moveBy(x: tileSize*3, y: 0, duration: 3), SKAction.moveBy(x: 0, y: 0, duration: 0.5), SKAction.hide(), SKAction.moveBy(x: 0, y: 0, duration: 1), SKAction.moveBy(x: -tileSize*3, y: 0, duration: 0), SKAction.unhide()])
-        
+        // run actions
         playerFront.run(SKAction.repeatForever(actionPlayerFront))
         playerRight.run(SKAction.repeatForever(actionPlayerRight))
         garbage.run(SKAction.repeatForever(actionGarbage))
