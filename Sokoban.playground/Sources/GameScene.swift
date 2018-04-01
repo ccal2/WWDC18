@@ -169,10 +169,10 @@ class GameScene: SKScene {
         self.addChild(self.createObject(folder: "Bins/", name: "binYellow", position: CGPoint(x: 256, y: 48)))
         
         // names
-        self.addChild(createLabel(text: "Paper", position: CGPoint(x: 307, y: 224), alignment: SKLabelHorizontalAlignmentMode.left))
-        self.addChild(createLabel(text: "Glass", position: CGPoint(x: 307, y: 160), alignment: SKLabelHorizontalAlignmentMode.left))
-        self.addChild(createLabel(text: "Plastic", position: CGPoint(x: 307, y: 96), alignment: SKLabelHorizontalAlignmentMode.left))
-        self.addChild(createLabel(text: "Metal", position: CGPoint(x: 307, y: 32), alignment: SKLabelHorizontalAlignmentMode.left))
+        self.addChild(createLabel(text: "Paper", position: CGPoint(x: 307, y: 224), alignmentH: SKLabelHorizontalAlignmentMode.left))
+        self.addChild(createLabel(text: "Glass", position: CGPoint(x: 307, y: 160), alignmentH: SKLabelHorizontalAlignmentMode.left))
+        self.addChild(createLabel(text: "Plastic", position: CGPoint(x: 307, y: 96), alignmentH: SKLabelHorizontalAlignmentMode.left))
+        self.addChild(createLabel(text: "Metal", position: CGPoint(x: 307, y: 32), alignmentH: SKLabelHorizontalAlignmentMode.left))
     }
     
     func loadButtons () {

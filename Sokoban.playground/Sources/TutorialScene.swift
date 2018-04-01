@@ -1,6 +1,6 @@
 import SpriteKit
 
-// button position
+// buttons' positions
 let homeButtonPos = CGPoint(x: 352, y: -229)
 let nextButtonPos = CGPoint(x: 352, y: -101)
 let instructionBlockPos = CGPoint(x: 352, y: 133)
@@ -12,9 +12,16 @@ let height: CGFloat = 510
 let xRange = SKRange(lowerLimit: (tileSize - width)/2, upperLimit: (width - tileSize)/2)
 let yRange = SKRange(lowerLimit: (tileSize - height)/2, upperLimit: (height - tileSize)/2)
 
+// instructions
+let instruction0 = createLabel(text: "Move the garbage to the bin", position: CGPoint.zero, name: "instruction0", maxWidth: 192)
+let instruction1 = createLabel(text: "Be sure to move it to the right one", position: CGPoint.zero, name: "instruction1", maxWidth: 192)
+let instruction2 = createLabel(text: "Be sure to move it to the right one", position: CGPoint.zero, name: "instruction2", maxWidth: 192)
+let instruction3 = createLabel(text: "Be carefull not to trap your garbage", position: CGPoint.zero, name: "instruction3", maxWidth: 192)
+let instructions: [SKLabelNode] = [instruction0, instruction1, instruction2, instruction3]
+
 class TutorialScene: SKScene {
     var instruction = 0
-    
+
     public override func didMove (to view: SKView) {
         self.loadButtons()
         self.loadGameMap()
@@ -34,6 +41,18 @@ class TutorialScene: SKScene {
         // add garbages
         let garbageBlue = gameMap.childNode(withName: "garbageBlue")!
         let garbageYellow = gameMap.childNode(withName: "garbageYellow")!
+        
+        // display instruction (text)
+        let block = self.childNode(withName: "block")!
+        for i in 0...3 {
+            let instruction = block.childNode(withName: "instruction\(i)")!
+            
+            if i == number {
+                instruction.isHidden = false
+            } else {
+                instruction.isHidden = true
+            }
+        }
         
         // stop previous animation
         playerFront.removeAllActions()
@@ -182,7 +201,6 @@ class TutorialScene: SKScene {
         } else if button.name == "Next" {
             self.addChild(createObject(name: "button_h", position: nextButtonPos))
             
-            
             self.instruction = (self.instruction + 1) % 4
             self.instructionsAnimation(self.instruction)
         }
@@ -198,12 +216,13 @@ class TutorialScene: SKScene {
     
     func loadButtons () {
         let homeButton = createObject(name: "button", nodeName: "Home", position: homeButtonPos)
-        self.addChild(homeButton)
-        homeButton.addChild(createLabel(text: "Home", position: CGPoint(x: 0, y: -10)))
-        
         let nextButton = createObject(name: "button", nodeName: "Next", position: nextButtonPos)
+        
+        self.addChild(homeButton)
         self.addChild(nextButton)
-        nextButton.addChild(createLabel(text: "Next", position: CGPoint(x: 0, y: -10)))
+        
+        homeButton.addChild(createLabel(text: "Home", position: CGPoint.zero))
+        nextButton.addChild(createLabel(text: "Next", position: CGPoint.zero))
     }
     
     func loadGameMap () {
@@ -268,11 +287,18 @@ class TutorialScene: SKScene {
     }
     
     func loadInstructionBlock () {
+        // block
         let block = SKSpriteNode(imageNamed: "block")
         block.name = "block"
         block.position = instructionBlockPos
         
         self.addChild(block)
+        
+        // instructions (text)
+        for instruction in instructions {
+            instruction.isHidden = true
+            block.addChild(instruction)
+        }
     }
     
     // convert position

@@ -14,8 +14,8 @@ class LoseScene: SKScene {
         self.addChild(restartButton)
         self.addChild(homeButton)
         
-        restartButton.addChild(createLabel(text: "Restart", position: CGPoint(x: 0, y: -10)))
-        homeButton.addChild(createLabel(text: "Home", position: CGPoint(x: 0, y: -10)))
+        restartButton.addChild(createLabel(text: "Restart", position: CGPoint.zero))
+        homeButton.addChild(createLabel(text: "Home", position: CGPoint.zero))
     }
     
     func touchButton (atPoint pos: CGPoint) {

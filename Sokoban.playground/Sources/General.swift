@@ -13,14 +13,23 @@ let arrowUpPos = CGPoint(x: 352, y: -96)
 
 // functions
 
-func createLabel (text: String, position: CGPoint, size: CGFloat = 18, alignment: SKLabelHorizontalAlignmentMode = SKLabelHorizontalAlignmentMode.center) -> SKLabelNode {
+func createLabel (text: String, position: CGPoint, name: String = "", size: CGFloat = 18, maxWidth: CGFloat = 1000, alignmentH: SKLabelHorizontalAlignmentMode = SKLabelHorizontalAlignmentMode.center) -> SKLabelNode {
     let label = SKLabelNode(fontNamed: "PressStart2P-Regular")
-    label.name = text
     label.text = text
     label.fontSize = size
     label.position = position
-    label.horizontalAlignmentMode = alignment
+    label.horizontalAlignmentMode = alignmentH
+    label.verticalAlignmentMode = SKLabelVerticalAlignmentMode.center
     label.zPosition = 1
+    label.lineBreakMode = NSLineBreakMode.byWordWrapping
+    label.numberOfLines = 0
+    label.preferredMaxLayoutWidth = maxWidth
+    
+    if name == "" {
+        label.name = text
+    } else {
+        label.name = name
+    }
     
     return label
 }

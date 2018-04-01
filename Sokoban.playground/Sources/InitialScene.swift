@@ -13,8 +13,8 @@ public class InitialScene: SKScene {
         self.addChild(playButton)
         self.addChild(tutorialButton)
         
-        playButton.addChild(createLabel(text: "Play", position: CGPoint(x: 0, y: -10)))
-        tutorialButton.addChild(createLabel(text: "Tutorial", position: CGPoint(x: 0, y: -10)))
+        playButton.addChild(createLabel(text: "Play", position: CGPoint.zero))
+        tutorialButton.addChild(createLabel(text: "Tutorial", position: CGPoint.zero))
     }
     
     func showAnimation () {
